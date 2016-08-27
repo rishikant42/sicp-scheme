@@ -1,0 +1,5 @@
+(define (sqr x)
+  (* x x))
+
+(define (sum-of-sqr x y)
+  (+ (sqr x) (sqr y)))

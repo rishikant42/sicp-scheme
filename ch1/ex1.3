@@ -1,0 +1,17 @@
+(define (sqr x)
+  (* x x))
+
+(define (sqr-2-large-no1 a b c)
+  (cond ((or (<= a b c) (<= a c b)) (+ (sqr b) (sqr c)))
+        ((or (<= b a c) (<= b c a)) (+ (sqr a) (sqr c)))
+        ((or (<= c a b) (<= c b a)) (+ (sqr a) (sqr b)))))
+
+(define (sqr-2-large-no2 a b c)
+  (cond ((and (<= a b) (<= a c)) (+ (sqr b) (sqr c)))
+        ((and (<= b a) (<= b c)) (+ (sqr a) (sqr c)))
+        ((and (<= c a) (<= c b)) (+ (sqr a) (sqr b)))))
+
+(define (sqr-2-large-no3 a b c)
+  (cond ((= (min a b c) a) (+ (sqr b) (sqr c)))
+        ((= (min a b c) b) (+ (sqr a) (sqr c)))
+         (else (+ (sqr a) (sqr b)))))
