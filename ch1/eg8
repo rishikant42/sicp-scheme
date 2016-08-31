@@ -1,0 +1,28 @@
+(define (factorial x)
+  (fact-iter 1 1 x))
+
+(define (fact-iter product counter max-count)
+  (if (> counter max-count)
+    product
+    (fact-iter (* counter product) (+ counter 1) max-count)))
+
+;; about fact-iter procedure
+;; recursive procedure --> iterative process ==> tail recursive
+;; require constant amount of memory
+;; tail recursive is compiler optimization trick
+;; It's tail recursive can be predict by looking last line i.e (fact-iter (* counter product) (+ counter 1) max-count)
+
+;; defination
+;; Recusive procedure --> Proceduce which call itself (directly or indirectly)
+
+;; Recursive process --> whose shape first exapnd then contract along some operator
+;;                   --> having syntax like
+;;                   --> (operator (fn prmtr))
+
+
+;; Iterative process --> which require fixed amount of memory
+;;                   --> having syntax like 
+;;                   --> (fn prmtr)
+
+;; tail recursive  --> procedure will call itself at the bottom of body
+;;                 --> Recursive procedure + iterative process

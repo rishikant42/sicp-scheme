@@ -1,0 +1,12 @@
+(define (factorial x)
+  (if (= x 1)
+    1
+    (* x (factorial (- x 1)))))
+
+;; recursive procedure --> recursive process
+;; Above factorial procedure is recusive, it genrate recursive process
+;; It's shape fist expand then contract
+;; we can predict this procedure will generate recusive process by looking on single line i.e (* x (factorial (- x 1)))
+;; It will expand along symbol *
+;; It will require an amount of memory which grow with no of procedure call,
+;; It will need of stack which keep track of operation performed on time of contraction
