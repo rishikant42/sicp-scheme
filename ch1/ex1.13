@@ -1,0 +1,11 @@
+(define phi (/ (+ 1 (sqrt 5)) 2.0))
+
+(define (^ base expo)
+  (define (power result expo)
+    (if (= expo 0)
+      result 
+      (power (* result base) (- expo 1))))
+  (power 1 expo))
+
+(define (f n)
+  (/ (^ phi n) (sqrt 5)))
