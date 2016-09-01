@@ -10,3 +10,5 @@
 ;; It will expand along symbol *
 ;; It will require an amount of memory which grow with no of procedure call,
 ;; It will need of stack which keep track of operation performed on time of contraction
+
+;; Interpreter need to keep track of amount of information which can grow (linerly with n in above example)

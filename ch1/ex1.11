@@ -1,0 +1,15 @@
+(define (recr-process n)
+  (cond ((< n 3) n)
+        (else (+ (recr-process (- n 1))
+                 (* 2 (fn (- n 2)))
+                 (* 3 (fn (- n 3)))))))
+
+(define (iterative-process a b c counter)
+  (if (= counter 0)
+    a
+    (iterative-process b c 
+                  (+ c (* 2 b) (* 3 a))
+                  (- counter 1))))
+
+(define (iter-process n)
+  (iterative-process 0 1 2 n))

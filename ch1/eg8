@@ -12,6 +12,8 @@
 ;; tail recursive is compiler optimization trick
 ;; It's tail recursive can be predict by looking last line i.e (fact-iter (* counter product) (+ counter 1) max-count)
 
+;; Interpreter need to keep track of fixed amount of memory (in above exmpl: product, counter & max-counter needed)
+
 ;; defination
 ;; Recusive procedure --> Proceduce which call itself (directly or indirectly)
 
@@ -20,7 +22,8 @@
 ;;                   --> (operator (fn prmtr))
 
 
-;; Iterative process --> which require fixed amount of memory
+;; Iterative process --> whose state can be sumarized by fixed no of state variables 
+;;                   --> Interpreter require to keep fixed amount of variable in order to execute process
 ;;                   --> having syntax like 
 ;;                   --> (fn prmtr)
 
