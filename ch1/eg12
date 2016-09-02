@@ -1,0 +1,28 @@
+(define (rec-exp b n)
+  (if (= n 0)
+    1
+    (* b (rec-exp b (- n 1)))))
+
+;; rec-exp: Recursive procedure --> recursive process
+
+
+(define (itr-exp b n)
+  (define (power result counter)
+    (if (= counter 0)
+      result
+      (power (* result b) (- counter 1))))
+  (power 1 n))
+
+;; power: Recursive procedure --> iterative process ==> tail recursive
+
+(define (even? n)
+  (= (remainder n 2) 0))
+
+(define (sqr x)
+  (* x x))
+
+(define (fast-exp b n)
+  (cond ((= n 0) 1)
+        ((= n 1) b)
+        ((even? n) (sqr (fast-exp b (/ n 2))))
+        (else (* b (fast-exp b (- n 1))))))
