@@ -1,0 +1,42 @@
+(define (smallest-divisor n)
+  (find-divisor n 2))
+
+(define (find-divisor n divisor)
+  (cond ((> (square divisor) n) n)
+        ((devides? n divisor) divisor)
+        (else (find-divisor n (+ divisor 1)))))
+
+(define (devides? n divisor)
+  (= (remainder n divisor) 0))
+
+(define (prime? n)
+  (= (smallest-divisor n) n))
+
+;; why this cond hold: ((> (square divisor) n) n) ?
+;; 
+;; It means if there is no divisor till (sqrt n), Then then will be no divisor b/w ((sqrt n), n). In that case smallest divisor itself number n.
+;; where 'sqrt' is square root
+;; 
+;; EX:
+;; let n = 37
+;; divisor = 2
+;; cond [(square 2) > 37] is false, It means there might be divior b/w (2, 37)
+;; 
+;; divisor = 3
+;; [(square 3) > 37] false, there might be divisor b/w (3, 37)
+;; 
+;; divisor = 4
+;; [(square 4) > 37] false, there might be divisor b/w (4, 37)
+;; 
+;; divisor = 5
+;; [(square 5) > 37] false, there might be divisor b/w (5, 37)
+;; 
+;; divisor = 6
+;; [(square 6) > 37] false, there might be divisor b/w (6, 37)
+;; 
+;; divisor = 7
+;; [(square 7) > 37] true, Now we are sure that there will not be any divisor b/w (7, 37). So the smallest divisor will be no 37 itself
+;; 
+;; No need to check cond of divisor = 8,9,10 ........ 36.
+;; 
+;; this algo require (theta(sqrt n)) number of steps to identify given no is prime or not

@@ -1,0 +1,9 @@
+(define (double x) (+ x x)) 
+(define (halve x) (floor (/ x 2))) 
+
+(define (* a b) 
+  (define (iter result a b) 
+    (cond ((= b 0) result) 
+          ((even? b) (iter result (double a) (halve b))) 
+          (else (iter (+ result a) (double a) (halve (- b 1)))))) 
+  (iter 0 a b))
