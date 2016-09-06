@@ -1,0 +1,102 @@
+(define (smallest-divisor n)
+  (find-divisor n 2))
+
+(define (find-divisor n divisor)
+  (cond ((> (square divisor) n) n)
+        ((devides? n divisor) divisor)
+        (else (find-divisor n (+ divisor 1)))))
+
+(define (devides? n divisor)
+  (= (remainder n divisor) 0))
+
+(define (prime? n)
+  (= (smallest-divisor n) n))
+
+(define (report-prime elapsed-time)
+  (display " *** ")
+  (display elapsed-time))
+
+(define (start-prime-test n start-time)
+  (if (prime? n)
+    (report-prime (- (runtime) start-time))))
+
+(define (timed-prime-test n)
+  (newline)
+  (display n)
+  (start-prime-test n (runtime)))
+
+(define (search-for-primes first last)
+  (define (search-iter cur last)
+    (if (<= cur last) (timed-prime-test cur))
+    (if (<= cur last) (search-iter (+ cur 2) last)))
+  (search-iter (if (even? first) (+ first 1) first)
+               (if (even? last) (- last 1) last)))
+
+;; OUTPUT ;;
+
+;; 1 ]=> (timed-prime-test 10000000000037)
+;; 
+;; 10000000000037 *** 5.98
+
+;; 1 ]=> (timed-prime-test 1000000000000037)
+
+;; 1000000000000037 *** 59.379999999999995
+
+;; Notice that, On increasing second input by factor 100 (approx), time is increase by factor 10 (approx) i.e (sqrt 100)
+;; which ensure that no of step (time taken) to check given no is prime by above algorithm is order of (theta (sqrt n))
+
+;; => (search-for-primes 10000000000000 10000000000050)
+;; 
+;; 10000000000001
+;; 10000000000003
+;; 10000000000005
+;; 10000000000007
+;; 10000000000009
+;; 10000000000011
+;; 10000000000013
+;; 10000000000015
+;; 10000000000017
+;; 10000000000019
+;; 10000000000021
+;; 10000000000023
+;; 10000000000025
+;; 10000000000027
+;; 10000000000029
+;; 10000000000031
+;; 10000000000033
+;; 10000000000035
+;; 10000000000037 *** 5.860000000000014
+;; 10000000000039
+;; 10000000000041
+;; 10000000000043
+;; 10000000000045
+;; 10000000000047
+;; 10000000000049
+;; 
+;; => (search-for-primes 1000000000000000 1000000000000050)
+;; 
+;; 1000000000000001
+;; 1000000000000003
+;; 1000000000000005
+;; 1000000000000007
+;; 1000000000000009
+;; 1000000000000011
+;; 1000000000000013
+;; 1000000000000015
+;; 1000000000000017
+;; 1000000000000019
+;; 1000000000000021
+;; 1000000000000023
+;; 1000000000000025
+;; 1000000000000027
+;; 1000000000000029
+;; 1000000000000031
+;; 1000000000000033
+;; 1000000000000035
+;; 1000000000000037 *** 58.94
+;; 1000000000000039
+;; 1000000000000041
+;; 1000000000000043
+;; 1000000000000045
+;; 1000000000000047
+;; 1000000000000049

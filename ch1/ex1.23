@@ -1,0 +1,40 @@
+(define (smallest-divisor n)
+  (find-divisor n 2))
+
+(define (find-divisor n divisor)
+  (define (next n)
+    (if (= n 2) 3 (+ n 2)))
+  (cond ((> (square divisor) n) n)
+        ((devides? n divisor) divisor)
+        (else (find-divisor n (next divisor)))))
+
+(define (devides? n divisor)
+  (= (remainder n divisor) 0))
+
+(define (prime? n)
+  (= (smallest-divisor n) n))
+
+(define (report-prime elapsed-time)
+  (display " *** ")
+  (display elapsed-time))
+
+(define (start-prime-test n start-time)
+  (if (prime? n)
+    (report-prime (- (runtime) start-time))))
+
+(define (timed-prime-test n)
+  (newline)
+  (display n)
+  (start-prime-test n (runtime)))
+
+;; OUTPUT ;;
+;; 1 ]=> (timed-prime-test 1000000000000037)
+;; 
+;; 1000000000000037 *** 38.800000000000004
+;; 
+;; According to code of ex22, Above test return 58.94 secs but now by using (next n) fn It become 38.80 secs.
+;; Time is not reduced by factor of 2. It is almost by factor 1.5
+;; (next n) will return 3 5 7 9 11 13 15 .......
+;; We are still making some useless tests like divisor = 9, 15, 18....
+;; we don't need to test of divisor = 9, if we already tested condition of divisor = 3
+;; We need to write some more condition to get optimize soln

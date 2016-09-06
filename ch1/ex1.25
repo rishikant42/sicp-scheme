@@ -1,0 +1,32 @@
+;; Method-1 to calculate a^n modulo n
+
+(define (expmod1 base exp m) 
+  (cond ((= exp 0) 1) 
+        ((even? exp) 
+         (remainder (square (expmod1 base (/ exp 2) m)) 
+                    m)) 
+        (else 
+          (remainder (* base (expmod1 base (- exp 1) m)) 
+                     m))))
+
+;; Method-2 
+
+(define (fast-exp b n)
+  (cond ((= n 0) 1)
+        ((= n 1) b)
+        ((even? n) (square (fast-exp b (/ n 2))))
+        (else (* b (fast-exp b (- n 1))))))
+
+(define (expmod2 base exp m)
+  (remainder (fast-exp base exp) m))
+
+;; expmod1 and expmod2 may produce same result but time wise expmod1 will take more time than expmod2 for large input.
+;; For Example
+
+
+;; 1 ]=> (expmod1 2 10000000 10000000)
+
+;; ;Value: 7109376
+
+;; 1 ]=> (expmod2 2 10000000 10000000)
+;; Look like intrepreter go for infinite loop, Or it will take long time to execute
