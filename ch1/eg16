@@ -1,0 +1,18 @@
+(define (inc n) (+ n 1))
+
+(define (sum-integers a b)
+  (if (> a b)
+    0
+    (+ a (sum-integers (inc a) b))))
+
+(define (cube x) (* x x x))
+
+(define (sum-cubes a b)
+  (if (> a b)
+    0
+    (+ (cube a) (sum-cubes (inc a) b))))
+
+(define (pi-sum a b)
+  (if (> a b)
+    0
+    (+ (/ 1.0  (* a (+ a 2))) (pi-sum (+ a 4) b))))
