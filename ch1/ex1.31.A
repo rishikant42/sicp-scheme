@@ -1,0 +1,48 @@
+(define (inc n) (+ n 1))
+
+;; (define (product-integers a b)
+;;   (if (> a b)
+;;     1
+;;     (* a (product-integers (inc a) b))))
+;; 
+;; (define (product-sqr a b)
+;;   (if (> a b)
+;;     1
+;;     (* (square a) (product-sqr (inc a) b))))
+;; 
+;; (define (pi-product a b)
+;;   (if (> a b)
+;;     1
+;;     (if (even? a)
+;;       (* (/ (+ a 2) (+ a 1)) (pi-product (inc a) b))
+;;       (* (/ (+ a 1) (+ a 2)) (pi-product (inc a) b)))))
+
+;; Above procedure are individual forms of product have some common pattern
+;; let's define general procedure for product
+
+(define (product term a next b)
+  (if (> a b)
+    1
+    (* (term a)
+       (product term (next a) next b))))
+
+(define (identity x) x)
+
+(define (product-integers a b)
+  (product identity a inc b))
+
+(define (product-sqr a b)
+  (product square a inc b))
+
+(define (factorial x)
+  (product identity 1 inc x))
+
+(define (pi-product a b)
+  (define (pi-term x)
+    (if (even? x)
+      (/ (+ x 2) (+ x 1))
+      (/ (+ x 1) (+ x 2))))
+  (product pi-term a inc b))
+
+
+;; Above recursive procedure genrate recursive process

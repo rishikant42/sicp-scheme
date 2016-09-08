@@ -1,0 +1,92 @@
+(define (smallest-divisor n)
+  (find-divisor n 2))
+
+(define (find-divisor n divisor)
+  (cond ((> (square divisor) n) n)
+        ((devides? n divisor) divisor)
+        (else (find-divisor n (+ divisor 1)))))
+
+(define (devides? n divisor)
+  (= (remainder n divisor) 0))
+
+(define (prime? n)
+  (= (smallest-divisor n) n))
+
+(define (filtered-accumulate combiner null-value term a next b filter)
+  (if (> a b)
+    null-value
+    (if (filter a)
+      (combiner (term a)
+                (filtered-accumulate combiner null-value term (next a) next b filter))
+      (combiner null-value
+                (filtered-accumulate combiner null-value term (next a) next b filter)))))
+
+(define (identity x) x)
+(define (inc n) (+ n 1))
+
+(define (sum term a next b filter)
+  (filtered-accumulate + 0 term a next b filter))
+
+(define (int-filter a)
+  (= a a))
+
+(define (sum-integers a b)
+  (sum identity a inc b int-filter))
+
+(define (sum-prime a b)
+  (sum identity a inc b prime?))
+
+(define (sum-prime-sqr a b)
+  (sum square a inc b prime?))
+
+(define (product term a next b filter)
+  (filtered-accumulate * 1 term a next b filter))
+
+(define (product-integers a b)
+  (product identity a inc b int-filter))
+
+(define (factorial b)
+  (product identity 1 inc b int-filter))
+
+(define (product-prime a b)
+  (product identity a inc b prime?))
+
+
+;; These procedures will genrate recusive process
+
+
+(define (sum-prime2 a b)
+  (if (> a b)
+    0
+    (if (prime? a)
+      (+ a (sum-prime2 (inc a) b))
+      (+ 0 (sum-prime2 (inc a) b)))))
+
+(define (sum-prime-sqr2 a b)
+  (if (> a b)
+    0
+    (if (prime? a)
+      (+ (square a) (sum-prime-sqr2 (inc a) b))
+      (+ 0 (sum-prime-sqr2 (inc a) b)))))
+
+(define (product-prime2 a b)
+  (if (> a b)
+    1
+    (if (prime? a)
+      (* a (product-prime2 (inc a)  b))
+      (* 1 (product-prime2 (inc a) b)))))
+
+(define (sum-prime3 a b)
+  (cond ((> a b) 0)
+        ((prime? a) (+ a (sum-prime3 (inc a) b)))
+        (else (+ 0 (sum-prime3 (inc a) b)))))
+
+(define (sum-prime-sqr3 a b)
+  (cond ((> a b) 0)
+        ((prime? a) (+ (square a) (sum-prime3 (inc a) b)))
+        (else (+ 0 (sum-prime3 (inc a) b)))))
+
+(define (product-prime3 a b)
+  (cond ((> a b) 1)
+        ((prime? a) (* a (product-prime3 (inc a) b)))
+        (else (* 1 (product-prime3 (inc a) b)))))

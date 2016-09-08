@@ -1,0 +1,21 @@
+(define (fact1 x)
+  (if (= x 1)
+    1
+    (* x (fact1 (- x 1)))))
+
+(define (fact2 x)
+  (define (iter n result)
+    (if (= n 0)
+      result
+      (iter (- n 1) (* n result))))
+  (iter x 1))
+
+(define (fact3 x)
+  (define (iter n result)
+    (if (> n x)
+      result
+      (iter (+ n 1) (* n result))))
+  (iter 1 1))
+
+;; fact1:  recursive procedure --> recursive process
+;; fact2 & fact3: recusive procedure --> iterative process ==> tail recusive
