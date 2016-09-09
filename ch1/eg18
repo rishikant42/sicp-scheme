@@ -1,0 +1,66 @@
+;; 1 ]=> (define (plus4 x) (+ x 4))
+;; 
+;; ;Value: plus4
+;; 
+;; 1 ]=> (plus4 6)
+;; 
+;; ;Value: 10
+;; 
+;; 1 ]=> ((lambda (x) (+ x 4)) 6)
+;; 
+;; ;Value: 10
+;; 
+;; 1 ]=> (define plus4* (lambda (x) (+ x 4)))
+;; 
+;; ;Value: plus4*
+;; 
+;; 1 ]=> (plus4* 6)
+;; 
+;; ;Value: 10
+;; 
+;; plus4 & plus4* are equivalent
+;; I guess, scheme interpreter convert plus4 form into plus4* form at the time of exectution
+
+(define (sum term a next b)
+  (if (> a b)
+    0
+    (+ (term a)
+       (sum term (next a) next b))))
+
+(define (sum-integers a b)
+  (sum (lambda (x) x) 
+       a
+       (lambda (n) (+ n 1))
+       b))
+
+(define (sum-sqr a b)
+  (sum (lambda (x) (* x x))
+       a
+       (lambda (x) (+ x 1))
+       b))
+
+(define (pi-sum a b)
+  (sum (lambda (x) (/ 1.0 (* x (+ x 2))))
+       a
+       (lambda (x) (+ x 4))
+       b))
+
+(define (integral f a b dx)
+  (* (sum f
+          (+ a (/ dx 2.0))
+          (lambda (x) (+ x dx))
+          b)
+     dx))
+
+(define (sum2 term a next b)
+  (define (iter a result)
+    (if (> a b)
+      result
+      (iter (next a) (+ result (term a)))))
+  (iter a 0))
+
+(define (sum-integers2 a b)
+  (sum2 (lambda (x) x)
+        a
+        (lambda (x) (+ x 1))
+        b))
