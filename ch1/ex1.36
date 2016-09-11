@@ -1,0 +1,47 @@
+(define tolerance 0.00001)
+
+(define (close-enough? x y)
+  (< (abs (- x y)) tolerance))
+
+(define (fixed-point f first-guess)
+  (define (try guess)
+    (let ((next (f guess)))
+      (display guess)
+      (display " *** ")
+      (display next)
+      (newline)
+      (if (close-enough? guess next)
+        next
+        (try next))))
+  (try first-guess))
+
+;; calculation of x^x
+;; let x^x = y
+;; log(x^x) = log(y)
+;; x.log(x) = log(y)
+;;    x     = log(y) / log(x)   ==> x --> log(y) / log(x) 
+
+(define (x-power-x y)
+  (fixed-point (lambda (x) (/ (log y) (log x)))
+               10.0))
+
+;; using average damping
+;; add x in LHS & RHS
+;; x + x = x + log(y) / log(x)
+;; 2x = x + log(y) / log(x)
+;; x = [x + log(y) / log(x)] / 2
+
+(define (average a b) (/ (+ a b) 2))
+
+(define (x-power2-x y)
+  (fixed-point (lambda (x) (average x (/ (log y) (log x))))
+               10.0))
+
+(define (sqrt x)
+  (fixed-point (lambda (y) (average y (/ x y)))
+               1.0))
+
+(define (sqrt2 x)
+  (define (fn y)
+    (average y (/ x y)))
+  (fixed-point fn 1.0))

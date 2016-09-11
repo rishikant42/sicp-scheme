@@ -1,0 +1,64 @@
+(define tolerance 0.00001)
+
+(define (close-enough? a b)
+  (< (abs (- a b)) tolerance))
+
+(define (fixed-point f first-guess)
+  (define (try guess)
+    (let ((next (f guess)))
+      (if (close-enough? guess next)
+        next
+        (try next))))
+  (try first-guess))
+
+;; 1 ]=> (fixed-point cos 1.0)
+;; 
+;; ;Value: .7390822985224024
+;; 
+;;
+;; way of exectuion of above call
+;;
+;; (fixed-point cos 1.0)
+;; (try 1.0)
+;; (try (cos 1.0))
+;; (try (cos (cos 1.0)))
+;; (try (cos (cos (cos 1.0))))
+;; 
+;; This process will continue, till successive two guesses value lie in tolerance
+
+;; procedure for finding square-root
+;; (sqrt x) = y
+;;  x = y * y
+;;  x / y = y     ==> y = x / y
+
+;; (define (sqrt x)
+;;   (fixed-point (lambda (y) (/ x y))
+;;                1.0))
+;; 
+;; Interpreter will go in infinite loop bcoz it will get same guess repeatidly by above sqrt procedure
+;; 
+;; (sqrt 3)
+;; (fixed-point (lambda (y) (/ 3 y)) 1.0)
+;; (try 1.0)
+;; (try (/ 3 1.0))
+;; (try (/ 3 (/ 3 1.0) ))  ==> (try 1.0)
+
+;; let's modefiy soln
+
+;; y = x / y
+;; y + y = y + (x / y)
+;; 2y = y + (x / y)
+;; y = (y + (x / y)) / 2
+
+(define (average a b)
+  (/ (+ a b) 2))
+
+(define (sqrt1 x)
+  (fixed-point (lambda (y) (average y (/ x y)))
+               1.0))
+
+(define (sqrt2 x)
+  (define (fn y)
+    (average y (/ x y)))
+  (fixed-point fn
+               1.0))

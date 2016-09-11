@@ -1,0 +1,84 @@
+;; if n1 = n2 = n3 ...
+;;and d1 = d2 = d3 ...
+
+(define (cont-frac1 n d k)
+  (if (= k 0)
+    0
+    (/ n (+ d (cont-frac1 n d (- k 1))))))
+
+(define (cont-frac2 n d k)
+  (define (iter counter result)
+    (if (= counter 0)
+      result
+      (iter (- counter 1) (/ n (+ d result)))))
+  (iter k 0))
+
+;; 1 ]=> (cont-frac1 1.0 1.0 4)
+;; 
+;; ;Value: .6000000000000001
+;; 
+;; 1 ]=> (cont-frac2 1.0 1.0 4)
+;; 
+;; ;Value: .6000000000000001
+;; 
+;; 1 ]=> (cont-frac1 1.0 1.0 11)
+;; 
+;; ;Value: .6180555555555556            ==> value of 1 / phi
+;; 
+;; 1 ]=> (define phi (/ (+ 1 (sqrt 5)) 2.0))
+;; 
+;; ;Value: phi
+;; 
+;; 1 ]=> (/ 1 phi)
+;; 
+;Value: .6180339887498948
+;;
+;; 1 ]=> (cont-frac2 1.0 1.0 11)
+;; 
+;; ;Value: .6180555555555556
+
+
+;; Let define genral approch where n1, n2 .. may be differ, similarly d1, d2 .. may be differ
+;; here the procedure is given to calculate numinator & dinominator
+
+(define (cont-frac3 n d k)
+  (define (iter counter result)
+    (if (= counter 0)
+      result
+      (iter (- counter 1)
+            (/ (n counter)
+               (+ (d counter) result)))))
+  (iter k 0))
+
+;; 1 ]=> (cont-frac (lambda (x) 1.0) (lambda (x) 1.0) 11)
+;; 
+;; ;Value: .6180555555555556
+
+;; Recursive soln
+
+(define (cont-frac4 n d k) 
+  (define (frac-rec i) 
+    (/ (n i) 
+       (+ (d i) 
+          (if (= i k) 
+            0 
+            (frac-rec (+ i 1)))))) 
+  (frac-rec 1)) 
+
+;; more accurate, add last term
+;; iterative process
+(define (cont-frac5 n d k) 
+  (define (iter i result) 
+    (if (= i 0) 
+      (/ (n i) (+ (d i) result)) 
+      (iter (- i 1) 
+            (/ (n i) (+ (d i) result))))) 
+  (iter k 0.0)) 
+
+;; recursive process
+(define (cont-frac6 n d k) 
+  (define (recur i) 
+    (if (> i k) 
+      0 
+      (/ (n i) (+ (d i) (recur (+ i 1)))))) 
+  (recur 0)) 

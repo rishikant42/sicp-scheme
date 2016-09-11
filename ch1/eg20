@@ -1,0 +1,95 @@
+(define (close-enough? a b)
+  (< (abs (- a b)) 0.001))
+
+(define (average a b)
+  (/ (+ a b) 2.0))
+
+(define (search f neg-pt pos-pt)
+  (let ((mid-pt (average neg-pt pos-pt)))
+    (if (close-enough? neg-pt pos-pt)
+      mid-pt
+      (let ((test-value (f mid-pt)))
+        (cond ((positive? test-value) (search f neg-pt mid-pt))
+              ((negative? test-value) (search f mid-pt pos-pt))
+              (else mid-pt))))))
+
+;; 1 ]=> (define (fn y) (- y 4))
+;; 
+;; ;Value: fn
+;; 
+;; 1 ]=> (search fn -5 10)
+;; 
+;; ;Value: 4.000091552734375
+;; 
+;; 1 ]=> (search fn -50 100)
+;; 
+;; ;Value: 3.999805450439453
+;; 
+;; 1 ]=> (search fn -500 1000)
+;; 
+;; ;Value: 4.000306129455566
+
+;; 1 ]=> (search (lambda (x) (- x 5)) -20 20)
+;;
+;; ;Value: 5.
+
+
+;; This is bad approch, if we don't specify pt of negative value & positive value of fn, It will give a wrong result
+
+;; 1 ]=> (define (fn y) (- y 4))
+;; 
+;; ;Value: fn
+;; 
+;; 1 ]=> (search fn 7 10)
+;; 
+;; ;Value: 7.0003662109375
+;; 
+;; 1 ]=> (search fn 70 10)
+;; 
+;; ;Value: 69.99954223632812
+;; 
+;; 1 ]=> (search fn 70 100)
+;; 
+;; ;Value: 70.00045776367187
+
+
+;; we can improve our soln by using given procedure
+
+(define (half-interval f a b)
+  (let ((a-value (f a))
+        (b-value (f b)))
+    (cond ((and (negative? a-value) (positive? b-value)) (search f a b))
+          ((and (negative? b-value) (positive? a-value)) (search f b a))
+          (else (error "values are not of opposite sign" a b)))))
+
+;; 1 ]=> (define (fn y) (- y 4))
+;; 
+;; ;Value: fn
+;; 
+;; 1 ]=> (half-interval fn -10 10)
+;; 
+;; ;Value: 3.99993896484375
+;; 
+;; 1 ]=> (half-interval fn 0 10)
+;; 
+;; ;Value: 3.99993896484375
+;; 
+;; 1 ]=> (half-interval fn 10 -10)
+;; 
+;; ;Value: 3.99993896484375
+;; 
+;; 1 ]=> (half-interval fn 10 100)
+;; 
+;; ;values are not of opposite sign 10 100
+;; 
+;; 1 ]=> (define (fn2 y) (+ y 4))
+;; 
+;; ;Value: fn2
+;; 
+;; 1 ]=> (half-interval fn2 -10 10)
+;; 
+;; ;Value: -3.99993896484375
+;; 
+;; 1 ]=> (half-interval fn2 -1 10)
+;; 
+;; ;values are not of opposite sign -1 10
