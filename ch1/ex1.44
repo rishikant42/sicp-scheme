@@ -1,0 +1,44 @@
+(define (average a b c)
+  (/ (+ a b c) 3.0))
+
+(define dx 0.00001)
+
+(define (smooth f)
+  (lambda (x) (average (f (- x dx))
+                       (f x)
+                       (f (+ x dx)))))
+
+;; 1 ]=> ((smooth square) 5)
+;; 
+;; ;Value: 25.000000000066663
+
+(define (compose f g)
+  (lambda (x) (f (g x))))
+
+(define (repeated f n)
+  (if (= n 1)
+    f
+    (compose f (repeated f (- n 1)))))
+
+(define (n-smooth f n) 
+  (repeated (smooth f) n))
+
+;; 1 ]=> ((n-smooth square 2) 5)
+;; 
+;; ;Value: 625.0000000033998
+
+(define (n-smooth-with-value f n x) 
+  ((repeated (smooth f) n) x))
+
+;; 1 ]=> (n-smooth-with-value square 2 5)
+;; 
+;; ;Value: 625.0000000033998
+
+(define (n-fold-smooth f n)  
+  ((repeated smooth n) f))
+
+;; 1 ]=> ((n-fold-smooth square 2) 5)
+;; 
+;; ;Value: 25.00000000013333
+
+;; last-one n-fold-smooth is more correct

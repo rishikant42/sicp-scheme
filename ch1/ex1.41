@@ -1,0 +1,13 @@
+(define (inc n) (+ n 1))
+
+(define (double g)
+  (lambda (x) (g (g x))))
+
+(define (double2 g)
+  (define (sub-fn x)
+    (g (g x)))
+  sub-fn)
+
+;; 1 ]=> (((double (double double)) inc) 5)
+;; 
+;; ;Value: 21

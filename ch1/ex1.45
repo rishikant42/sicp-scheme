@@ -1,0 +1,92 @@
+(define tolerance 0.00001)
+(define (average a b) (/ (+ a b) 2.0))
+
+(define (close-enough? a b)
+  (< (abs (- a b)) tolerance))
+
+(define (fixed-point f first-guess)
+  (define (try guess)
+    (let ((next (f guess)))
+      (if (close-enough? guess next)
+        next
+        (try next))))
+  (try first-guess))
+
+(define (newton-transform g)
+  (lambda (x) (- x 
+                 (/ (g x)
+                    ((deriv g) x)))))
+
+(define (average-damping f)
+  (lambda (x) (average x (f x))))
+
+(define (exp b n)
+  (if (= n 0)
+    1
+    (* b (exp b (- n 1)))))
+
+(define (compose f g)
+  (lambda (x) (f (g x))))
+
+(define (repeated f n)
+  (if (= n 1)
+    f
+    (compose f (repeated f (- n 1)))))
+
+;; (define (repeated2 f n)
+;;   (define (iter counter result)
+;;     (if (= counter 1)
+;;       result
+;;       (iter (- counter 1) (compose f result))))
+;;   (iter n f))
+
+
+;; By default the base of log is e
+;; 1 ]=> (log 2)
+;; 
+;; ;Value: .6931471805599453
+;; 
+;; 1 ]=> (log 3)
+
+;Value: 1.0986122886681098
+
+;; Above result is of base e
+;; if we have to find log having base b
+;; devide result by (log b)
+
+;; 1 ]=> (/ (log 2) (log 2))  ;; value of (log 2) having base 2
+;; 1 ]=> (/ (log 3) (log 2))  ;; value of (log 3) having base 2
+
+(define (logB n b)
+  (/ (log n) (log b)))
+
+;; (nth-root x n)
+
+;; if n = 1 ==> average-damping require 0 times
+;; if n = 2 ==> average-damping require 1 times
+;; if n = 3 ==> average-damping require 1 times
+;; if n = 4 ==> average-damping require 2 times
+;; if n = 5 ==> average-damping require 2 times
+;; if n = 6 ==> average-damping require 2 times
+;; if n = 7 ==> average-damping require 2 times
+;; if n = 8 ==> average-damping require 3 times 
+;; if n = 2^m ==> average-damping require m times
+
+;; How to find m?
+
+;; n = 2^m
+;; log(n) = log(2^m)
+;; log(n) = m.log(2)
+;; m = log(n) / log(2)
+
+;; if n = 8 ==> n = 2^3 ==> m = 3
+;; if base = 2 ==> m = log(8)
+;; ottherwise  ==> m = log(8) / log(2)
+
+
+(define (nth-root x n)
+  (let ((counter (floor (/ (log n) (log 2)))))
+    (if (= counter 0)
+      x
+    (fixed-point ((repeated average-damping counter) (lambda (y) (/ x (exp y (- n 1))))) 
+                 1.0))))
