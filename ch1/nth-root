@@ -12,11 +12,6 @@
         (try next))))
   (try first-guess))
 
-(define (newton-transform g)
-  (lambda (x) (- x 
-                 (/ (g x)
-                    ((deriv g) x)))))
-
 (define (average-damping f)
   (lambda (x) (average x (f x))))
 
