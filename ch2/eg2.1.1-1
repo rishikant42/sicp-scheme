@@ -1,0 +1,112 @@
+(define (add-rat x y)
+  (make-rat (+ (* (numer x) (denom y))
+               (* (numer y) (denom x)))
+            (* (denom x) (denom y))))
+
+(define (sub-rat x y)
+  (make-rat (- (* (numer x) (denom y))
+               (* (numer y) (denom x)))
+            (* (denom x) (denom y))))
+
+(define (mul-rat x y)
+  (make-rat (* (numer x) (numer y))
+            (* (denom x) (denom y))))
+
+(define (div-rat x y)
+  (make-rat (* (numer x) (denom y))
+            (* (denom x) (numer y))))
+
+(define (equal-rational? x y)
+  (= (* (numer x) (denom y))
+     (* (numer y) (denom x))))
+
+(define (gcd a b)
+  (if (= b 0)
+    a
+    (gcd b (remainder a b))))
+
+(define (make-rat n d)
+  (let ((g (gcd n d)))
+    (cons (/ n g) (/ d g))))
+
+;; (define (make-rat2 n d)
+;;   (cons n d))
+
+(define (numer x)
+  (car x))
+
+(define (denom x)
+  (cdr x))
+
+(define (print-rat x)
+  (newline)
+  (display (numer x))
+  (display "/")
+  (display (denom x)))
+
+;; 1 ]=> (make-rat 18 27)
+;; 
+;; ;Value 12: (2 . 3)
+;; 
+;; 1 ]=> (make-rat2 18 27)
+;; 
+;; ;Value 13: (18 . 27)
+;; 
+;; 1 ]=> (define a (make-rat 18 27))
+;; 
+;; ;Value: a
+;; 
+;; 1 ]=> (define b (make-rat2 18 27))
+;; 
+;; ;Value: b
+;; 
+;; 1 ]=> (print-rat a)
+;; 
+;; 2/3
+;; 
+;; 1 ]=> (print-rat b)
+;; 
+;; 18/2
+;; 
+;; make-rat is much better than make-rat2 procedure.
+
+
+;; 1 ]=> (define x (make-rat 3 5))
+;; 
+;; ;Value: x
+;; 
+;; 1 ]=> (define y (make-rat 7 9))
+;; 
+;; ;Value: y
+;; 
+;; 1 ]=> (print-rat (add-rat x y))
+;; 
+;; 62/45
+;; 
+;; 1 ]=> (print-rat (sub-rat x y))
+;; 
+;; 8/-45
+;; 
+;; 1 ]=> (print-rat (mul-rat x y))
+;; 
+;; 7/15
+;; 
+;; 1 ]=> (print-rat (div-rat x y))
+;; 
+;; 27/35
+;; 
+;; 1 ]=> (equal-rational? x y)
+;; 
+;; ;Value: #f
+;; 
+;; 1 ]=> (define p (make-rat 14 21))
+;; 
+;; ;Value: p
+;; 
+;; 1 ]=> (define q (make-rat 16 24))
+;; 
+;; ;Value: q
+;; 
+;; 1 ]=> (equal-rational? p q)
+;; 
+;; ;Value: #t
