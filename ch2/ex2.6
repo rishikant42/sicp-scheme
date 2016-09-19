@@ -1,0 +1,37 @@
+(define zero (lambda (f) (lambda (x) x))) 
+
+(define (add-1 n) 
+  (lambda (f) (lambda (x) (f ((n f) x)))))
+
+(define one (lambda (f) (lambda (x) (f x)))) 
+(define two (lambda (f) (lambda (x) (f (f x)))))
+(define three (lambda (f) (lambda (x) (f (f (f x)))))) 
+
+(define (add a b) 
+  (lambda (f) 
+    (lambda (x) 
+      ((a f) ((b f) x)))))
+
+;; 1 ]=> ((one square) 2)
+;; 
+;; ;Value: 4
+;; 
+;; 1 ]=> ((one square) 2)
+;; 
+;; ;Value: 4
+;; 
+;; 1 ]=> ((two square) 2)
+;; 
+;; ;Value: 16
+;; 
+;; 1 ]=> (((add two one) square) 2)
+;; 
+;; ;Value: 256
+;; 
+;; 1 ]=> ((three square) 2)
+;; 
+;; ;Value: 256
+;; 
+;; 1 ]=> (((add one two) square) 2)
+;; 
+;; ;Value: 256

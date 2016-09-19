@@ -1,0 +1,55 @@
+(define (average a b)
+  (/ (+ a b) 2.0))
+
+(define (x-point p) 
+  (car p))
+
+(define (y-point p)
+  (cdr p))
+
+(define (make-point x y)
+  (cons x y))
+
+(define (make-segment start end)
+  (cons start end))
+
+(define (start-segment p)
+  (car p))
+
+(define (end-segment p)
+  (cdr p))
+
+(define (midpoint-segment p)
+  (let ((start (start-segment p))
+        (end (end-segment p)))
+    (make-point (average (x-point start)
+                         (x-point end))
+                (average (y-point start)
+                         (y-point end)))))
+
+(define (print-point p)
+  (newline)
+  (display "(")
+  (display (x-point p))
+  (display ", ")
+  (display (y-point p))
+  (display ")"))
+
+;; 
+;; 1 ]=> (define a (make-point 6 8))
+;; 
+;; ;Value: a
+;; 
+;; 1 ]=> (define b (make-point 4 6))
+;; 
+;; ;Value: b
+;; 
+;; 1 ]=> (define p (make-segment a b))
+;; 
+;; ;Value: p
+;; 
+;; 1 ]=> (print-point (midpoint-segment p))
+;; 
+;; (5., 7.)
+
+;; This is correct answer of asked question.

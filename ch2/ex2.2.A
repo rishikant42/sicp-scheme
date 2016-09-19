@@ -1,0 +1,31 @@
+(define (make-point x y)
+  (cons x y))
+
+(define (x-point p1 p2)
+  (make-point (car p1) (car p2)))
+
+(define (y-point p1 p2)
+  (make-point (cdr p1) (cdr p2)))
+
+(define (add-point p)
+  (+ (car p) (cdr p)))
+
+(define (midpoint-segment p1 p2)
+  (make-point (/ (add-point (x-point p1 p2)) 2.0)
+              (/ (add-point (y-point p1 p2)) 2.0)))
+
+;; this is not correct solution of problem
+
+;; 1 ]=> (define p1 (make-point 4 8))
+;; 
+;; ;Value: p1
+;; 
+;; 1 ]=> (define p2 (make-point 6 8))
+;; 
+;; ;Value: p2
+;; 
+;; 1 ]=> (midpoint-segment p1 p2)
+;; 
+;; ;Value 11: (5. . 8.)
+;; 
+;; output of above test should be (5 . 8)

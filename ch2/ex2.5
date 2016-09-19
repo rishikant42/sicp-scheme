@@ -1,0 +1,22 @@
+(define (exp b n)
+  (define (iter counter result)
+    (if (= counter 0)
+      result
+      (iter (- counter 1) (* b result))))
+  (iter n 1))
+
+(define (count-rem-0-div number divisor)
+  (define (iter n)
+    (if (= (remainder number (exp divisor n)) 0)
+      (iter (+ n 1))
+      (- n 1)))
+  (iter 1))
+
+(define (cons a b)
+  (* (exp 2 a) (exp 3 b)))
+
+(define (car z)
+  (count-rem-0-div z 2))
+
+(define (cdr z)
+  (count-rem-0-div z 3))
