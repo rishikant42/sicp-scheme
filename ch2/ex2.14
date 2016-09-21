@@ -1,0 +1,126 @@
+(define (make-interval x y) 
+  (cons x y))
+
+(define (lower-bound z) 
+  (min (car z) (cdr z)))
+
+(define (upper-bound z)
+  (max (car z) (cdr z)))
+
+(define (sub-interval x y)
+  (add-interval x
+                (make-interval (- (upper-bound y))
+                               (- (lower-bound y)))))
+
+(define (add-interval x y)
+  (make-interval (+ (lower-bound x) (lower-bound y))
+                 (+ (upper-bound x) (upper-bound y))))
+
+(define (mul-interval x y)
+  (let ((p1 (* (lower-bound x) (lower-bound y)))
+        (p2 (* (lower-bound x) (upper-bound y)))
+        (p3 (* (upper-bound x) (lower-bound y)))
+        (p4 (* (upper-bound x) (upper-bound y))))
+    (make-interval (min p1 p2 p3 p4)
+                   (max p1 p2 p3 p4))))
+
+(define (div-interval x y)
+  (mul-interval x 
+                (make-interval (/ 1.0 (upper-bound y))
+                               (/ 1.0 (lower-bound y)))))
+
+(define (center i)
+  (/ (+ (upper-bound i)
+        (lower-bound i))
+     2.0))
+
+(define (width i)
+  (/ (- (upper-bound i)
+        (lower-bound i))
+     2.0))
+
+(define (percent p x)                         ; p% of x
+  (/ (* p x) 100))
+
+(define (make-center-percent c p)                 ;; if tolerance is given as p%
+  (make-interval (- c (percent p c))
+                 (+ c (percent p c))))
+
+(define (uncertainty i)
+  (/ (width i) (center i)))
+
+(define (percent-tolerance i)
+  (* (/ (width i)
+        (center i))
+     100))
+
+(define (par1 r1 r2)
+  (div-interval (mul-interval r1 r2)
+                (add-interval r1 r2)))
+
+(define (par2 r1 r2)
+  (let ((one (make-interval 1 1)))
+    (div-interval one (add-interval (div-interval one r1)
+                                    (div-interval one r2)))))
+
+;; par1 & par2 are not identical, it seems identical but that's not true. Because r1 & r2 are interval 
+;; so the calculation will be differ in par1 & par2 which yield different answer
+
+;; if r1 & r2 are valuse like 4 6 7 (not interval), then idea of par1 & par2 will give same answer
+
+;; Demo:
+
+;; 1 ]=> (define a (make-interval 2 8))
+;; 
+;; ;Value: a
+;; 
+;; 1 ]=> (define b (make-interval 4 12))
+;; 
+;; ;Value: b
+;; 
+;; 1 ]=> (par1 a b)
+;; 
+;; ;Value 11: (.4 . 16.)
+;; 
+;; 1 ]=> (par2 a b)
+;; 
+;; ;Value 12: (1.3333333333333333 . 4.800000000000001)
+;; 
+;; 
+;; hence par1 & par2 will not give same answer
+;; 
+;; caseI: let's see par1 calculation
+;; 
+;; (par1 a b)
+;; 
+;; (div-interval (mul-interval (2 8) (4 12))
+;;               (add-interval (2 8) (4 12)))
+;; 
+;; (div-interval (8 96) (6 20))
+;; 
+;; (mul-interval (8 96) [(/ 1 20) (/ 1 6)])
+;; 
+;; (0.4 16)
+;; 
+;; caseII : let's see par2 calculation
+;; 
+;; (par2 a b)
+;; 
+;; (div-interval (1 1) (add-interval (div-interval (1 1) (2 8))
+;;                                   (div-interval (1 1) (4 12))))
+;; 
+;; (div-interal (1 1) (add-interval (mul-interval (1 1) [(/ 1 8) (/ 1 2)])
+;;                                  (mul-interval (1 1) [(/ 1 12) (/ 1 4)])))
+;; 
+;; (div-interval (1 1) (add-interval (mul-interval (1 1) (0.125 0.5))
+;;                                   (mul-interval (1 1) (0.083 0.25))))
+;; 
+;; (div-interval (1 1) (add-interval (0.125 0.5) (0.083 0.25)))
+;; 
+;; (div-interval (1 1) (0.208 0.75))
+;; 
+;; (mul-interval (1 1) [(/ 1 0.75) (/ 1 0.208)])
+;; 
+;; (mul-interval (1 1) (1.33 4.80))
+;; 
+;; (1.33 4.80)

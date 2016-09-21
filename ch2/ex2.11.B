@@ -1,0 +1,122 @@
+(define (make-interval x y) 
+  (cons x y))
+
+(define (lower-bound z) 
+  (min (car z) (cdr z)))
+
+(define (upper-bound z)
+  (max (car z) (cdr z)))
+
+
+(define (div-interval x y)
+  (let ((a (upper-bound y))
+        (b (lower-bound y)))
+    (if (or (= a 0) (= b 0))
+      (error "Divison with interval having 0 at boundary isn't possible")
+      (mul-interval x 
+                    (make-interval (/ 1.0 a)
+                                   (/ 1.0 b))))))
+
+(define (sub-interval x y)
+  (add-interval x
+                (make-interval (- (upper-bound y))
+                               (- (lower-bound y)))))
+
+(define (add-interval x y)
+  (make-interval (+ (lower-bound x) (lower-bound y))
+                 (+ (upper-bound x) (upper-bound y))))
+
+(define (mul-interval x y)
+  (define (sign z)                                                    ;; sign of upper & lower bound of z-interval
+    (cond ((and (>= (upper-bound z) 0) (>= (lower-bound z) 0)) 1)     ;; both are +ve, return 1
+          ((and (< (upper-bound z) 0) (< (lower-bound z) 0)) -1)      ;; both are -ve, return -1
+          (else 0)))                                                  ;; opposite sign, return 0
+  (let ((l-x (lower-bound x))
+        (u-x (upper-bound x))
+        (l-y (lower-bound y))
+        (u-y (upper-bound y)))
+    (cond ((= (sign x) 1)
+           (cond ((= (sign y) 1) (make-interval (* l-x l-y) (* u-x u-y)))
+                 ((= (sign y) -1) (make-interval (* u-x l-y) (* l-x u-y)))
+                 (else (make-interval (* u-x l-y) (* u-x u-y)))))
+          ((= (sign x) -1)
+           (cond ((= (sign y) 1) (make-interval (* l-x u-y) (* u-x l-y)))
+                 ((= (sign y) -1) (make-interval (* u-x u-y) (* l-x l-y)))
+                 (else (make-interval (* l-x u-y) (* l-x l-y)))))
+          (else
+            (cond ((= (sign y) 1) (make-interval (* l-x u-y) (* u-x u-y)))
+                  ((= (sign y) -1) (make-interval (* u-x l-y) (* l-x l-y)))
+                  (else (make-interval 
+                          (min (* l-x u-y) (* u-x l-y))
+                          (max (* l-x l-y) (* u-x u-y)))))))))
+
+
+(define (make-center-width c w)               ;; if tolerance given in value like 3.5 + 0.15, 3.5 - 0.15
+  (make-interval (- c w)                      ;; here +- 0.15 is tolerance
+                 (+ c w)))
+
+(define (center i)
+  (/ (+ (upper-bound i)
+        (lower-bound i))
+     2.0))
+
+(define (width i)
+  (/ (- (upper-bound i)
+        (lower-bound i))
+     2.0))
+
+;; 1 ]=> (define a (make-center-width 3.5 0.15))
+;; 
+;; ;Value: a
+;; 
+;; 1 ]=> a
+;; 
+;; ;Value 11: (3.35 . 3.65)
+;; 
+;; 1 ]=> (center a)
+;; 
+;; ;Value: 3.5
+;; 
+;; 1 ]=> (width a)
+;; 
+;; ;Value: .1499999999999999
+
+
+(define (percent p x)                         ; p% of x
+  (/ (* p x) 100))
+
+(define (make-center-percent c p)                 ;; if tolerance is given as p%
+  (make-interval (- c (percent p c))
+                 (+ c (percent p c))))
+
+(define (uncertainty i)
+  (/ (width i) (center i)))
+
+(define (percent-tolerance i)
+  (* (/ (width i)
+        (center i))
+     100))
+
+;; 1 ]=> (define a (make-center-percent 100 10))
+;; 
+;; ;Value: a
+;; 
+;; 1 ]=> a
+;; 
+;; ;Value 11: (90 . 110)
+;; 
+;; 1 ]=> (center a)
+;; 
+;; ;Value: 100.
+;; 
+;; 1 ]=> (width a)
+;; 
+;; ;Value: 10.
+;; 
+;; 1 ]=> (percent-tolerance a)
+;; 
+;; ;Value: 10.
+;; 
+;; 1 ]=> (uncertainty a)
+;; 
+;; ;Value: .1

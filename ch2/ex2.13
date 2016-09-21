@@ -1,0 +1,43 @@
+;; 1 ]=> (load "ex2.12")
+;; 
+;; ;Loading "ex2.12"... done
+;; ;Value: percent-tolerance
+;; 
+;; 1 ]=> (define a (make-center-percent 100 0.5))
+;; 
+;; ;Value: a
+;; 
+;; 1 ]=> a
+;; 
+;; ;Value 11: (99.5 . 100.5)
+;; 
+;; 1 ]=> (define b (make-center-percent 200 0.4))
+;; 
+;; ;Value: b
+;; 
+;; 1 ]=> b
+;; 
+;; ;Value 12: (199.2 . 200.8)
+;; 
+;; 1 ]=> (percent-tolerance a)
+;; 
+;; ;Value: .5
+;; 
+;; 1 ]=> (percent-tolerance b)
+;; 
+;; ;Value: .40000000000000563
+;; 
+;; 1 ]=> (define c (mul-interval a b))
+;; 
+;; ;Value: c
+;; 
+;; 1 ]=> c
+;; 
+;; ;Value 13: (19820.399999999998 . 20180.4)
+;; 
+;; 1 ]=> (percent-tolerance c)
+;; 
+;; ;Value: .8999820003600019
+;; 
+;; 
+;; ;; Hence (percent-tolerance c) = (percent-tolerance a) + (percent-tolerance b)
