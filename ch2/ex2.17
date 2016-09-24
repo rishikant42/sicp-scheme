@@ -1,0 +1,40 @@
+;; (define (last-pair items)
+;;   (if (null? (cdr items))
+;;     (car items)
+;;     (last-pair (cdr items))))
+;; 
+;; that's easy solution, but thrown in case of empty list
+;; 1 ]=> (last-pair (list 1 2 3 4 5 6 7 8))
+;; 
+;; ;Value: 8
+;; 1 ]=> (last-pair '())
+;; 
+;; ;The object (), passed as the first argument to cdr, is not the correct type.
+
+;; (define (last-pair items)
+;;   (define (last-pair-iter items result)
+;;     (if (null? items)
+;;       result
+;;       (last-pair-iter (cdr items) items)))
+;;   (last-pair-iter items items))
+
+;; above approach doesn't return element, It return list
+
+;; 1 ]=> (last-pair (list 1 2 3 4 5 6 7 8))
+;; 
+;; ;Value 12: (8)
+;; 1 ]=> (last-pair '())
+;; 
+;; ;Value: ()
+
+(define (length items)
+  (if (null? items)
+    0
+    (+ 1 (length (cdr items)))))
+
+(define (last-pair items)
+  (cond ((= (length items) 0) (error "Can't be taken last-pair"))
+        ((= (length items) 1) (car items))
+        (else (last-pair (cdr items)))))
+
+;; last approach seems better
