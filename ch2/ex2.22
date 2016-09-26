@@ -1,0 +1,57 @@
+(define nil '())
+
+(define (square-list items)
+  (define (iter things answer)
+    (if (null? things)
+      answer
+      (iter (cdr things)
+            (cons (square (car things))
+                  answer))))
+  (iter items nil))
+
+;; OUTPUT
+;; 
+;; 1 ]=> (square-list '(1 2 3))
+;; 
+;; ;Value 12: (9 4 1)
+;; 
+;; Explaination:
+;; 
+;; (square-list '(1 2 3))
+;; 
+;; (iter '(1 2 3) '())
+;; 
+;; (iter '(2 3) '(1))    ;; (cons (square 1) '())
+;; 
+;; (iter '(3) '(4 1))    ;; (cons (square 2) '(1))
+;; 
+;; (iter '() '(9 4 1))   ;; (cons (square 3) '(4 1))
+;;
+;; (9 4 1)
+
+(define (square-list items)
+  (define (iter things answer)
+    (if (null? things)
+      answer
+      (iter (cdr things)
+            (cons answer
+                  (square (car things))))))
+  (iter items nil))
+
+;; OUTPUT
+;; 
+;; 1 ]=> (square-list '(1 2 3))
+;; 
+;; ;Value 15: (((() . 1) . 4) . 9)
+;; 
+;; Explaination:
+;; 
+;; (square-list '(1 2  3) '())
+;; 
+;; (iter '(2 3) (() . 1))      ;; (cons '() 1)
+;; 
+;; (iter '(3) ((() . 1) . 4))
+;; 
+;; (iter '() (((() . 1) . 4) . 9))
+;; 
+;; (((() . 1) . 4) . 9)

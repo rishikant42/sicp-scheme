@@ -1,0 +1,20 @@
+;; (define (for-each proc items)
+;;   (define (for-iter i item)
+;;     (if (null? item)
+;;       true
+;;       (for-iter (proc (car item)) (cdr item))))
+;;   (for-iter '() items))
+
+(define (for-each proc items)
+  (if (not (null? items))
+    (proc (car items)))
+  (if (null? items)
+    true
+    (for-each proc (cdr items))))
+
+;; (define (for-each proc items) 
+;;   (let ((items-cdr (cdr items))) 
+;;     (proc (car items)) 
+;;     (if (not (null? items-cdr)) 
+;;       (for-each proc items-cdr) 
+;;       true))) 
