@@ -1,0 +1,30 @@
+(define (same-parity n . items)           ;; recursive process
+  (define (parity-rec item)
+    (if (even? n)
+      (cond ((null? item) '())
+            ((even? (car item)) (cons (car item) (parity-rec (cdr item))))
+            (else (parity-rec (cdr item))))
+      (cond ((null? item) '())
+            ((odd? (car item)) (cons (car item) (parity-rec (cdr item))))
+            (else (parity-rec (cdr item))))))
+
+  (cons n (parity-rec items)))
+
+;; (define (reverse items)
+;;   (define (reverse-iter item result)
+;;     (if (null? item)
+;;       result
+;;       (reverse-iter (cdr item) (cons (car item) result))))
+;;   (reverse-iter items '()))
+;; 
+;; (define (same-parity n . items)          ;; iterative process
+;;   (define (parity-iter item result)
+;;     (if (even? n)
+;;       (cond ((null? item) result)
+;;             ((even? (car item)) (parity-iter (cdr item) (cons (car item) result)))
+;;             (else (parity-iter (cdr item) result)))
+;;       (cond ((null? item) result)
+;;             ((odd? (car item)) (parity-iter (cdr item) (cons (car item) result)))
+;;             (else (parity-iter (cdr item) result)))))
+;; 
+;;   (reverse (parity-iter items (list n))))
