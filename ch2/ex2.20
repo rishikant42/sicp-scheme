@@ -10,6 +10,8 @@
 
   (cons n (parity-rec items)))
 
+;; This problem have better approach in "primitive" code file
+
 ;; (define (reverse items)
 ;;   (define (reverse-iter item result)
 ;;     (if (null? item)
