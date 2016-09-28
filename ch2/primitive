@@ -1,0 +1,108 @@
+(define (length items)
+  (if (null? items)
+    0
+    (+ 1 (length (cdr items)))))
+
+(define (length items)
+  (define (length-iter things result)
+    (if (null? things)
+      result
+      (length-iter (cdr things) (+ 1 result))))
+  (length-iter items 0))
+
+(define (nth items n)
+  (if (= n 0)
+    (car items)
+    (nth (cdr items) (- n 1))))
+
+(define (append list1 list2)
+  (if (null? list1)
+    list2
+    (cons (car list1)
+          (append (cdr list1)
+                  list2))))
+
+(define nil '())
+
+(define (reverse items)
+  (define (reverse-iter things result)
+    (if (null? things)
+      result
+      (reverse-iter (cdr things)
+                    (cons (car things) result))))
+  (reverse-iter items nil))
+
+(define (last-pair items)
+  (if (null? (cdr items))
+    (car items)
+    (last-pair (cdr items))))
+
+
+(define (even-parity items)
+  (cond ((null? items) nil)
+        ((even? (car items)) (cons (car items) (even-parity (cdr items))))
+        (else (even-parity (cdr items)))))
+
+(define (odd-parity items)
+  (cond ((null? items) nil)
+        ((odd? (car items)) (cons (car items) (odd-parity (cdr items))))
+        (else (odd-parity (cdr items)))))
+
+(define (same-parity n . items)
+  (if (even? n)
+    (cons n (even-parity items))
+    (cons n (odd-parity items))))
+
+(define (map proc items)
+  (if (null? items)
+    nil
+    (cons (proc (car items))
+          (map proc (cdr items)))))
+
+(define (scale-list items factor)
+  (map (lambda (x) (* x factor))
+       items))
+
+(define (square-list items)
+  (map square items))
+
+(define (cube-list items)
+  (map (lambda (x) (* x x x))
+       items))
+
+(define (for-each proc items)
+  (if (not (null? items))
+    (proc (car items)))
+  (if (null? items)
+    true
+    (for-each proc (cdr items))))
+
+;; 1 ]=> (for-each (lambda (x) (newline) (display (* x x))) (list 1 2 3 4 5))
+;; 
+;; 1
+;; 4
+;; 9
+;; 16
+;; 25
+;; ;Value: #t
+;; 
+;; 
+;; NOTE
+;; 
+;; 1 ]=> (for-each square (list 1 2 3 4 5))
+;; 
+;; ;Value: #t
+;; 
+;; It doesn't mean 'for-each' is not working. It's not displaying the value obtain after applying proc 'square'.
+;; we have to specify in code as "(display (proc (car items)))" to print the result
+;; 
+
+;; yet we don't have mechanism to execute more than one stmnt in case of condition true or false
+;; In clojure, we can use 'do' special form to execute one than one stmnt
+;; when we  will have such mechanism, we will convert above 'for-each' procedure as given below
+
+;; (define (for-each proc items)
+;;   (if (null? items)
+;;     true
+;;     (do (proc (car items))
+;;         (for-each proc (cdr items)))))
