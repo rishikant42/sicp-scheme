@@ -1,0 +1,13 @@
+(define (fringe tree)
+  (cond ((null? tree) '())
+        ((not (pair? tree)) (list tree))
+        (else (append (fringe (car tree)) 
+                      (fringe (cdr tree))))))
+
+(define (fringe T) 
+  (define (iter T R) 
+    (cond ((null? T) R) 
+          ((not (pair? T)) (cons T R)) 
+          (else (iter (car T) 
+                      (iter (cdr T) R))))) 
+  (iter T '()))

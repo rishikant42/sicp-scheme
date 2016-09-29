@@ -1,0 +1,22 @@
+(define nil '())
+
+(define (reverse items)
+  (define (reverse-iter things result)
+    (if (null? things)
+      result
+      (reverse-iter (cdr things) (cons (car things) result))))
+  (reverse-iter items nil))
+
+;; (define (deep-reverse x) 
+;;   (if (pair? x) 
+;;     (append (deep-reverse (cdr x))  
+;;             (list (deep-reverse (car x)))) 
+;;     x))
+;; 
+
+(define (deep-reverse tree) 
+  (define (iter t result) 
+    (cond ((null? t) result) 
+          ((not (pair? (car t))) (iter (cdr t) (cons (car t) result))) 
+          (else (iter (cdr t) (cons (deep-reverse (car t)) result))))) 
+  (iter tree '())) 
