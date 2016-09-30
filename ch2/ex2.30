@@ -1,0 +1,20 @@
+(define nil '())
+
+(define (square-tree x)
+  (cond ((null? x) nil)
+        ((not (pair? x)) (square x))
+        (else (cons (square-tree (car x))
+                    (square-tree (cdr x))))))
+
+(define (map proc items)
+  (if (null? items)
+    nil
+    (cons (proc (car items))
+          (map proc (cdr items)))))
+
+(define (square-tree t)
+  (map (lambda (x)
+         (if (pair? x)
+           (square-tree x)
+           (square x)))
+       t))

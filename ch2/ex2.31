@@ -1,0 +1,24 @@
+(define nil '())
+
+(define (square-tree x)
+  (cond ((null? x) nil)
+        ((not (pair? x)) (square x))
+        (else (cons (square-tree (car x))
+                    (square-tree (cdr x))))))
+
+(define (tree-map proc tree)
+  (cond ((null? tree) nil)
+        ((not (pair? tree)) (proc tree))
+        (else (cons (tree-map proc (car tree))
+                    (tree-map proc (cdr tree))))))
+
+(define (square-tree t)
+  (tree-map square t))
+
+(define (cube-tree t)
+  (tree-map (lambda (x) (* x x x))
+            t))
+
+(define (scale-tree t factor)
+  (tree-map (lambda (x) (* x factor))
+            t))
