@@ -1,0 +1,271 @@
+(define nil '())
+
+(define (sum-odd-squares tree)
+  (cond ((null? tree) 0)
+        ((not (pair? tree)) (if (odd? tree) (square tree) 0))
+        (else (+ (sum-odd-squares (car tree))
+                 (sum-odd-squares (cdr tree))))))
+
+;; OUTPUT:
+;; 
+;; 1 ]=> (sum-odd-squares '((1 2) (3 4) 5))
+;; 
+;; ;Value: 35
+;; 
+;; 
+;; Explaination:
+;; SOS ==> sum-odd-squares
+;; 
+;; (SOS '((1 2) (3 4) 5))
+;; 
+;; (+ (SOS '(1 2)) (SOS '((3 4) 5)))
+;; (+ (+ (SOS 1) (SOS '(2))) (+ (SOS '(3 4)) (SOS '(5))))
+;; (+ (+ 1 (+ (SOS 2) (SOS '()))) (+ (+ (SOS 3) (SOS '(4))) (+ (SOS 5) (SOS '()))))
+;; (+ (+ 1 (+ 0 0)) (+ (+ 9 (+ (SOS 4) (SOS '()))) (+ 25 0)))
+;; (+ (+ 1 0) (+ (+ 9 (+ 0 0)) 25))
+;; 35
+
+(define (fib n)
+  (define (iter a b counter)
+    (if (= counter n)
+      a
+      (iter b (+ a b) (+ counter 1))))
+  (iter 0 1 0))
+
+;; (fib 6)
+;; (iter 0 1 0)
+;; (iter 1 1 1)
+;; (iter 1 2 2)
+;; (iter 2 3 3)
+;; (iter 3 5 4)
+;; (iter 5 8 5)
+;; (iter 8 13 6)
+;; 8
+
+;; procedure: even-fibs
+;; return list of all the even Fibonacci numbers Fib(k), where k is less than or equal to a given integer n:
+
+(define (even-fibs n) 
+  (define (next k)
+    (if (> k n)
+      nil
+      (let ((f (fib k)))
+        (if (even? f)
+          (cons f (next (+ k 1)))
+          (next (+ k 1))))))
+  (next 0))
+
+;; OUTPUT
+;; 
+;; 1 ]=> (even-fibs 10)
+;; 
+;; ;Value 11: (0 2 8 34)
+;; 
+;; Explaination:
+;; 
+;; (even-fibs 10)
+;; (next 0)
+;; (cons 0 (next 1))
+;; (cons 0 (next 2))
+;; (cons 0 (next 3))
+;; (cons 0 (cons 2 (next 4)))
+;; (cons 0 (cons 2 (next 5)))
+;; (cons 0 (cons 2 (next 6)))
+;; (cons 0 (cons 2 (cons 8 (next 7))))
+;; (cons 0 (cons 2 (cons 8 (next 8))))
+;; (cons 0 (cons 2 (cons 8 (next 9))))
+;; (cons 0 (cons 2 (cons 8 (cons 34 (next 10)))))
+;; (cons 0 (cons 2 (cons 8 (cons 34 (next 11)))))
+;; (cons 0 (cons 2 (cons 8 (cons 34 '()))))
+;; (0 8 34)
+
+;; procedure: fib-evens,   fib of even numbers
+;; return list of all fiboncci no fib(k), where k is even & less than or equal to n
+
+(define (fib-evens n)
+  (define (next k)
+    (if (> k n)
+      nil
+      (if (even? k)
+        (cons (fib k) (next (+ k 1)))
+        (next (+ k 1)))))
+  (next 0))
+
+(define (map proc items)
+  (if (null? items)
+    nil
+    (cons (proc (car items))
+          (map proc (cdr items)))))
+
+;; (map square '(1 2 3))
+;; (cons 1 (map square '(2 3)))
+;; (cons 1 (cons 4 (map square '(3))))
+;; (cons 1 (cons 4 (cons 9 (map square '()))))
+;; (cons 1 (cons 4 (cons 9 '())))
+;; (1 4 9)
+
+(define (filter predicate sequence)
+  (cond ((null? sequence) nil)
+        ((predicate (car sequence))
+         (cons (car sequence) (filter predicate (cdr sequence))))
+        (else (filter predicate (cdr sequence)))))
+
+;; (filter even? '(0 1 2 3))
+;; (cons 0 (filter even? '(1 2 3)))
+;; (cons 0 (filter even? '(2 3)))
+;; (cons 0 (cons 2 (filter even? '(3))))
+;; (cons 0 (cons 2 (filter even? '())))
+;; (cons 0 (cons 2 '()))
+;; (0 2)
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+    initial
+    (op (car sequence)
+        (accumulate op initial (cdr sequence)))))
+
+;; (accumulate * 1 '(1 2 3))
+;; (* 1 (accumulate * 1  '(2 3)))
+;; (* 1 (* 2 (accumulate * 1 '(3))))
+;; (* 1 (* 2 (* 3 (accumulate * 1 '()))))
+;; (* 1 (* 2 (* 3 1)))
+;; 6
+
+(define (enumerate-interval low high)
+  (if (> low high)
+    nil
+    (cons low
+          (enumerate-interval (+ low 1) high))))
+ 
+;; (enumerate-interval 0 3)
+;; (cons 0 (enumerate-interval 1 3))
+;; (cons 0 (cons 1 (enumerate-interval 2 3)))
+;; (cons 0 (cons 1 (cons 2 (enumerate-interval 3 3))))
+;; (cons 0 (cons 1 (cons 2 (cons 3  (enumerate-interval 4 3)))))
+;; (cons 0 (cons 1 (cons 2 (cons 3 '()))))
+;; (0 1 2 3)
+
+(define (enumerate-tree tree)
+  (cond ((null? tree) nil)
+        ((not (pair? tree)) (list tree))
+        (else (append (enumerate-tree (car tree))
+                      (enumerate-tree (cdr tree))))))
+
+;; (enumerate-tree '((1 2) (3 4) 5))
+;; ET ==> enumerate-tr33
+;; (append (ET '(1 2)) (ET '((3 4) 5)))
+;; (append (append (ET 1) (ET '(2))) (append (ET '(3 4)) (ET '(5))))
+;; (append (append '(1) (append (ET 2) (ET '()))) (append (append (ET 3) (ET '(4))) (append (ET 5) (ET '()))))
+;; (append (append '(1) (append '(2) '())) (append (append '(3) (append (ET 4) (ET '()))) (append '(5) '())))
+;; (append (append '(1) '(2)) (append (append '(3) (append '(4) '())) '(5)))
+;; (1 2 3 4 5)
+
+(define (sum-odd-squares tree)
+  (accumulate +
+              0
+              (map square
+                   (filter odd? (enumerate-tree tree)))))
+
+(define (sum-even-squares tree)
+  (accumulate +
+              0
+              (map square
+                   (filter even? (enumerate-tree tree)))))
+
+;; OUTPUT:
+;; 
+;; 1 ]=> (sum-odd-squares '((1 2) (3 4) 5))
+;; 
+;; ;Value: 35
+;; 
+;; Explaination:
+;; 
+;; (sum-odd-square '((1 2) (3 4) 5))
+;; (accumulate + 0 (map square (filter odd? (enumerate-tree '((1 2) (3 4) 5)))))
+;; (accumulate + 0 (map square (filter odd? '(1 2 3 4 5))))
+;; (accumulate + 0 (map square '(1 3 5)))
+;; (accumulate + 0 '(1 9 25))
+;; 35
+
+(define (even-fibs n)
+  (accumulate cons
+              nil
+              (filter even?
+                      (map fib (enumerate-interval 0 n)))))
+
+;; OUTPUT:
+;; 
+;; 1 ]=> (even-fibs 10)
+;; 
+;; ;Value 11: (0 2 8 34)
+;; 
+;; Explaination:
+;; 
+;; (even-fibs 10)
+;; (accumulate cons nil (filter even? (map fib (enumerate-interval 0 10))))
+;; (accumulate cons nil (filter even? (map fib '(0 1 2 3 4 5 6 7 8 9 10))))
+;; (accumulate cons nil (filter even? '(0 1 1 2 3 5 8 13 21 34 55)))
+;; (accumulate cons nil '(0 2 8 34 ))
+;; (0 2 8 34)
+
+(define (fib-evens n)  ;; list of fib of even number which are less than or equal to n
+  (accumulate cons  
+              nil
+              (map fib
+                   (filter even? (enumerate-interval 0 n)))))
+ 
+;; OUTPUT:
+;; 
+;; 1 ]=> (fib-evens 10)
+;; 
+;; ;Value 14: (0 1 3 8 21 55)
+;; 
+;; Explaination:
+;; 
+;; (fib-evens 10)
+;; (accumulate cons nil (map fib (filter even (enumerate-interval 0 10))))
+;; (accumulate cons nil (map fib (filter even '(0 1 2 3 4 5 6 7 8 9 10))))
+;; (accumulate cons nil (map fib '(0 2 4 6 8 10)))
+;; (accumulate cons nil '(0 1 3 8 21 55))
+;; (0 1 3 8 21  55)
+
+(define (list-fib-squares n)
+  (accumulate cons 
+              nil
+              (map square
+                   (map fib (enumerate-interval 0 n)))))
+
+;; OUTPUT:
+;; 
+;; 1 ]=> (list-fib-squares 10)
+;; 
+;; ;Value 15: (0 1 1 4 9 25 64 169 441 1156 3025)
+;; 
+;; Explaination
+;; 
+;; (list-fib-squares 10)
+;; (accumulate cons nil (map square (map fib (enumerate-interval 0 10))))
+;; (accumulate cons nil (map square (map fib '(0 1 2 3 4 5 6 7 8 9 10))))
+;; (accumulate cons nil (map square '(0 1 1 2 3 5 8 13 21 34 55)))
+;; (accumulate cons nil '(0 1 1 4 9 25 64 169 441 1156 3025))   
+;; (0 1 1 4 9 25 64 169 441 1156 3025)
+
+(define (product-of-squares-of-odd-elements sequence)
+  (accumulate *
+              1
+              (map square (filter odd? sequence))))
+
+
+;; OUTPUT:
+;; 
+;; 1 ]=> (product-of-squares-of-odd-elements (list 1 2 3 4 5))
+;; 
+;; ;Value: 225
+;; 
+;; Explaination:
+;; 
+;; (product-of-squares-of-odd-elements (list 1 2 3 4 5))
+;; (accumulate * 1 (map square (filter odd? '(1 2 3 4 5))))
+;; (accumulate * 1 (map square '(1 3 5)))
+;; (accumulate * 1 '(1 9 25))
+;; 225
