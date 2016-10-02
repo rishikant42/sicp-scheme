@@ -1,0 +1,37 @@
+(define nil '())
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+    initial
+    (op (car sequence)
+        (accumulate op initial (cdr sequence)))))
+
+(define (map p sequence)
+  (if (null? sequence)
+    nil
+    (cons (p (car sequence))
+          (map p (cdr sequence)))))
+
+(define (map p sequence)
+  (accumulate (lambda (x y) (cons (p x) y))
+              nil
+              sequence))
+
+(define (append list1 list2)
+  (if (null? list1)
+    list2
+    (cons (car list1)
+          (append (cdr list1) list2))))
+
+(define (append list1 list2)
+  (accumulate cons list2 list1))
+
+(define (length sequence)
+  (if (null? sequence)
+    0
+    (+ 1 (length (cdr sequence)))))
+
+(define (length sequence)
+  (accumulate (lambda (x y) (+ 1 y))
+              0
+              sequence))

@@ -1,0 +1,70 @@
+(define nil '())
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+    initial
+    (op (car sequence)
+        (accumulate op initial (cdr sequence)))))
+
+(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+    nil
+    (cons (accumulate op init (map car seqs))
+          (accumulate-n op init (map cdr seqs)))))
+
+(define (dot-product v w)
+  (accumulate + 0 (map * v w)))  
+
+;; here primitive defination of map in scheme is used which is more genral, described at page 105 footnote
+
+;; OUTPUT
+;; 1 ]=> (dot-product '(1 2 3) '(5 6 7))
+;; 
+;; ;Value: 38
+;; 
+;; (dot-product '(1 2 3) '(5 6 7))
+;; (accumulate + 0 (map * '(1 2 3) '(5 6 7)))
+;; (accumulate + 0 '(5 12 21))
+;; 38
+
+(define (matrix-*-vector m v)
+  (map (lambda (row) (dot-product row v))  m))
+
+
+;; OUTPUT:
+;; 
+;; 1 ]=> (matrix-*-vector '((1 2 3) (4 5 6)) '(7 8 9))
+;; 
+;; ;Value 11: (50 122)
+;; 
+;; (matrix-*-vector m v)
+;; (matrix-*-vector '((1 2 3) (4 5 6)) '(7 8 9))
+;; (map (lambda (row) (dot-product row '(7 8 9)))   '((1 2 3) (4 5 6)))
+;; ((dot-product '(1 2 3) '(7 8 9)) (dot-product '(4 5 6) '(7 8 9))
+;; (50 122)
+
+(define (transpose mat)
+  (accumulate-n cons nil mat))
+
+;; OUTPUT:
+;; 
+;; 1 ]=> (transpose '((1 2 3) (4 5 6) (7 8 9)))
+;; 
+;; ;Value 25: ((1 4 7) (2 5 8) (3 6 9))
+
+(define (matrix-*-matrix m1 m2)
+  (let ((trans (transpose m2))) 
+    (map (lambda (m1-row) (matrix-*-vector trans m1-row)) m1)))
+
+;; OUTPUT:
+;; 
+;; 1 ]=> (matrix-*-matrix '((1 2) (3 4)) '((5 6) (7 8)))
+;; 
+;; ;Value 11: ((19 22) (43 50))
+;; 
+;; Exlaination:
+;; 
+;; (matrix-*-matrix '((1 2) (3 4)) '((5 6) (7 8)))
+;; (map (lambda (m1-row) (matrix-*-vector '((5 7) (6 8))  m1-row)) '((1 2) (3 4)))
+;; ((matrix-*-vector '((5 7) (6 8)) '(1 2)) (matrix-*-vector '((5 7) (6 8)) '(3 4)))
+;; ((19 22)   (43 50))

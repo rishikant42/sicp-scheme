@@ -1,0 +1,35 @@
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+    initial
+    (op (car sequence)
+        (accumulate op initial (cdr sequence)))))
+
+(define (exp b n)
+  (if (= n 0)
+    1
+    (* b (exp b (- n 1)))))
+
+(define (horner-eval x coefficient-sequence)
+  (accumulate (lambda (this-coeff higher-term) (+ (* higher-term x) this-coeff))
+              0
+              coefficient-sequence))
+
+;; Ex1:
+;; 1 + 3x + 0x^2 + 5x^3 + 0x^4 + 1x^5
+;; 1 + x(3 + x(0 + x(5 + x(0 + x))))
+;; 
+;;            OR
+;; 
+;; 1x^5 + 0x^4 + 5x^3 + 0x^2 + 3x +  1
+;; ((((x + 0)x + 5)x + 0)x + 3)x + 1
+;; 
+;; Ex2:
+;; 
+;; x^2 + 2x + 1
+;; (x + 2)x + 1
+;; 
+;; OUTPUT:
+;; 
+;; 1 ]=> (horner-eval 2 (list 1 2 1))
+;; 
+;; ;Value: 9

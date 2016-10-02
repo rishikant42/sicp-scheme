@@ -1,0 +1,36 @@
+(define nil '())
+
+(define (map proc items)
+  (if (null? items)
+    nil
+    (cons (proc (car items))
+          (map proc (cdr items)))))
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+    initial
+    (op (car sequence)
+        (accumulate op initial (cdr sequence)))))
+
+(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+    nil
+    (cons (accumulate op init (map car seqs))
+          (accumulate-n op init (map cdr seqs)))))
+
+;; OUTPUT:
+;; 
+;; 1 ]=> (accumulate-n +  0 '((1 2 3) (4 5 6) (7 8 9) (10 11 12)))
+;; 
+;; ;Value 11: (22 26 30)
+;; 
+;; Explaination:
+;; 
+;; acc ==> accumulate, and acc-n ==> accumulate-n
+;; 
+;; (accumulate-n +  0 '((1 2 3) (4 5 6) (7 8 9) (10 11 12)))
+;; (cons (acc + 0 '(1 4 7 9)) (acc-n + 0 '((2 3) (5 6) (8 9) (11 12))))
+;; (cons 22 (cons (acc + 0 '(2 5 8 11)) (acc-n + 0 '((3) (6) (9) (12)))))
+;; (cons 22 (cons 26 (cons (acc + 0 '(3 6 9 12)) (acc-n '(() () () ())))))
+;; (cons 22 (cons 22 (cons 30  '())))
+;; (22 26 30)

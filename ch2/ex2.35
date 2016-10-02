@@ -1,0 +1,41 @@
+(define nil '())
+
+(define (count-leaves t)
+  (cond ((null? t) 0)
+        ((not (pair? t)) 1)
+        (else (+ (count-leaves (car t))
+                 (count-leaves (cdr t))))))
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+    initial
+    (op (car sequence)
+        (accumulate op initial (cdr sequence)))))
+
+(define (enumerate-tree tree)
+  (cond ((null? tree) nil)
+        ((not (pair? tree)) (list tree))
+        (else (append (enumerate-tree (car tree))
+                      (enumerate-tree (cdr tree))))))
+
+(define (length sequence)
+  (accumulate (lambda (x y) (+ 1 y))
+              0
+              sequence))
+
+(define (map proc sequence)
+  (if (null? sequence)
+    nil
+    (cons (proc (car sequence))
+          (map proc (cdr sequence)))))
+
+(define (count-leaves t)
+  (accumulate (lambda (x y) (+ 1 y))
+              0
+              (enumerate-tree t)))
+
+;;Alternate
+(define (count-leaves t)
+  (accumulate +
+              0
+              (map length (map enumerate-tree t))))
