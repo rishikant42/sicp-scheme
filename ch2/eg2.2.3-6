@@ -1,0 +1,22 @@
+(define nil '())
+
+(define (accumulate op init seq)
+  (if (null? seq)
+    init
+    (op (car seq)
+        (accumulate op init (cdr seq)))))
+
+(define (flatmap proc seq)
+  (accumulate append nil (map proc seq)))
+
+(define (remove item sequence)
+  (filter (lambda (x) (not (= x item)))
+          sequence))
+
+(define (permutations s)
+  (if (null? s)
+    (list nil)
+    (flatmap (lambda (x)
+               (map (lambda (p) (cons x p))
+                    (permutations (remove x s))))
+             s)))
