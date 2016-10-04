@@ -1,0 +1,39 @@
+(define nil '())
+
+(define (accumulate op init seq)
+  (if (null? seq)
+    init
+    (op (car seq)
+        (accumulate op init (cdr seq)))))
+
+(define (enumerate-interval low high)
+  (if (> low high)
+    nil
+    (cons low (enumerate-interval (+ low 1) high))))
+
+;; (define (all-ordered-triples n)
+;;   (accumulate append nil (map (lambda (i)
+;;                            (accumulate append nil (map (lambda (j)
+;;                                                     (map (lambda (k) (list i j k))
+;;                                                          (enumerate-interval 1 (- j 1))))
+;;                                                        (enumerate-interval 1 (- i 1)))))
+;;                               (enumerate-interval 1 n))))
+
+;; A better way to define 'all-ordered-triples' procedure
+
+(define (flatmap proc seq)
+  (accumulate append nil (map proc seq)))
+
+(define (all-ordered-triples n) 
+  (flatmap (lambda (i) 
+             (flatmap (lambda (j) 
+                        (map (lambda (k) (list i j k)) 
+                             (enumerate-interval 1 (- j 1)))) 
+                      (enumerate-interval 1 (- i 1)))) 
+           (enumerate-interval 1 n))) 
+
+(define (filter-pair pairs sum)
+  (filter (lambda (items) (= (accumulate + 0 items) sum)) pairs)) 
+
+(define (ordered-triples-sum n s)
+  (filter-pair (all-ordered-triples n) s))
