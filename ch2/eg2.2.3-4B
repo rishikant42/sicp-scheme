@@ -45,13 +45,13 @@
                                          (enumerate-interval 1 (- i 1))))
                                   (enumerate-interval 1 n))))
 
-(define (prime-pair? pair)
+(define (prime-sum? pair)
   (prime? (+ (car pair) (cadr pair))))
 
 (define (filter-pair item)
   (if (null? item)
     nil
-    (if (prime-pair? (car item))
+    (if (prime-sum? (car item))
       (cons (car item) (filter-pair (cdr item)))
       (filter-pair (cdr item)))))
 
