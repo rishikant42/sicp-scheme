@@ -1,0 +1,74 @@
+(define nil '())
+
+(define (accumulate op init seq)
+  (if (null? seq)
+    init
+    (op (car seq)
+        (accumulate op init (cdr seq)))))
+
+(define (enumerate-interval low high)
+  (if (> low high)
+    nil
+    (cons low
+          (enumerate-interval (+ low 1) high))))
+
+(define (filter predicate seq)
+  (if (null? seq)
+    nil
+    (if (predicate (car seq))
+      (cons (car seq) (filter predicate (cdr seq)))
+      (filter predicate (cdr seq)))))
+
+
+(define (smallest-divisor n)
+  (find-divisor n 2))
+
+(define (find-divisor n divisor)
+  (cond ((> (square divisor) n) n)
+        ((devides? n divisor) divisor)
+        (else (find-divisor n (+ divisor 1)))))
+
+(define (devides? n divisor)
+  (= (remainder n divisor) 0))
+
+(define (prime? n)
+  (if (= n 1)
+    false
+    (= (smallest-divisor n) n)))
+
+(define n 6)
+
+(define all-pair (accumulate append
+                             nil
+                             (map (lambda (i) 
+                                    (map (lambda (j) (list i j))
+                                         (enumerate-interval 1 (- i 1))))
+                                  (enumerate-interval 1 n))))
+
+(define (prime-pair? pair)
+  (prime? (+ (car pair) (cadr pair))))
+
+(define (filter-pair item)
+  (if (null? item)
+    nil
+    (if (prime-pair? (car item))
+      (cons (car item) (filter-pair (cdr item)))
+      (filter-pair (cdr item)))))
+
+(define (result item)
+  (map (lambda (pair) (list (car pair) (cadr pair) (+ (car pair) (cadr pair))))
+       item))
+
+;; OUTPUT:
+;; 
+;; 1 ]=> all-pair
+;; 
+;; ;Value 11: ((2 1) (3 1) (3 2) (4 1) (4 2) (4 3) (5 1) (5 2) (5 3) (5 4) (6 1) (6 2) (6 3) (6 4) (6 5))
+;; 
+;; 1 ]=> (filter-pair all-pair)
+;; 
+;; ;Value 12: ((2 1) (3 2) (4 1) (4 3) (5 2) (6 1) (6 5))
+;; 
+;; 1 ]=> (result (filter-pair all-pair))
+;; 
+;; ;Value 13: ((2 1 3) (3 2 5) (4 1 5) (4 3 7) (5 2 7) (6 1 7) (6 5 11))
