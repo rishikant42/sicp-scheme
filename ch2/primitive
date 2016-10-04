@@ -77,6 +77,13 @@
     true
     (for-each proc (cdr items))))
 
+(define (filter predicate seq)
+  (if (null? seq)
+    nil
+    (if (predicate (car seq))
+      (cons (car seq) (filter predicate (cdr seq)))
+      (filter predicate (cdr seq)))))
+
 ;; 1 ]=> (for-each (lambda (x) (newline) (display (* x x))) (list 1 2 3 4 5))
 ;; 
 ;; 1
