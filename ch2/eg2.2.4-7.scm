@@ -1,5 +1,5 @@
-;; #lang sicp
-;; (#%require sicp-pict)
+#lang sicp
+(#%require sicp-pict)
 
 (define (frame-coord-map frame)
   (lambda (v)
@@ -48,4 +48,4 @@
 (define e1 (make-vect 3 4))
 (define e2 (make-vect 5 6))
 (define a-frame (make-frame o e1 e2))
-;; (display ((frame-coord-map a-frame) (make-vect 0 0)))
+(display ((frame-coord-map a-frame) (make-vect 2 3)))
