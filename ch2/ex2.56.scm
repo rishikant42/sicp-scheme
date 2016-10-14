@@ -6,7 +6,7 @@
         ((product? exp) (make-sum (make-product (multiplier exp) (deriv (multiplicand exp) var))
                                   (make-product (multiplicand exp) (deriv (multiplier exp) var))))
         ((exponentiation? exp) (make-product (make-product (exponent exp) 
-                                                           (make-exponentiation (base exp) (- (exponent exp) 1)))
+                                                           (make-exponentiation (base exp) (make-sum (exponent exp) '-1)))
                                              (deriv (base exp) var)))
         (else (error "Unknown expression type -- DERIV" exp))))
 
@@ -39,9 +39,9 @@
         (else (list '* m1 m2))))
 
 (define (make-exponentiation base exponent)
-  (cond ((eq? base 1) 1)
-        ((= exponent 0) 1)
-        ((= exponent 1) base)
+  (cond ((=number? base 1) 1)
+        ((=number? exponent 0) 1)
+        ((=number? exponent 1) base)
         ((and (number? base) (number? exponent)) (power base exponent))
         (else (list '** base exponent))))
 
@@ -71,7 +71,7 @@
 ;; (** x y) ==> x^y ==> x to the power y
 
 (define (exponentiation? e)
-  (and (pair? e) (eq? (car e) '**) (number? (caddr e))))
+  (and (pair? e) (eq? (car e) '**)))
 
 (define (base e)
   (cadr e))
