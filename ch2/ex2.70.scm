@@ -56,7 +56,7 @@
       (adjoin-set (make-leaf (car pair) (cadr pair))
                   (make-leaf-set (cdr pairs))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EX2.68;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define (encode message tree)
   (if (null? message)
@@ -79,7 +79,7 @@
            (cons 1 (encode-symbol symbol (right-branch tree)))))
         ((error "symbol doesn't present in tree" symbol))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EX2.69;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define (generate-huffman-tree pairs)
    (successive-merge (make-leaf-set pairs)))
@@ -93,20 +93,73 @@
        (successive-merge (adjoin-set (make-code-tree first second) 
                                      rest))))) 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;TESTS;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EX2.70;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; 1 ]=> (generate-huffman-tree '((a 4) (b 2) (c 1) (d 1)))
+;; (define symbol-frequency '((a 2) (boom 1) (get 2) (job 2) (na 16) (sha 3) (yip 9) (wah 1)))
 ;; 
-;; ;Value 11: ((leaf a 4) ((leaf b 2) ((leaf d 1) (leaf c 1) (d c) 2) (b d c) 4) (a b d c) 8)
+;; 1 ]=> (generate-huffman-tree symbol-frequency)
 ;; 
-;; 1 ]=> (define tree (generate-huffman-tree '((a 4) (b 2) (c 1) (d 1))))
+;; ;Value 11: ((leaf na 16) ((leaf yip 9) (((leaf a 2) ((leaf wah 1) (leaf boom 1) (wah boom) 2) (a wah boom) 4) ((leaf sha 3) ((leaf job 2) (leaf get 2) (job get) 4) (sha job get) 7) (a wah boom sha job get) 11) (yip a wah boom sha job get) 20) (na yip a wah boom sha job get) 36)
+;; ;
+;; 
+;; EXPLANATION: 
+;; 
+;; 1 ]=> (define s1 (make-leaf-set symbol-frequency))
+;; 
+;; ;Value: s1
+;; 
+;; 1 ]=> (define s2 (adjoin-set (make-code-tree (car s1) (cadr s1)) (cddr s1)))
+;; 
+;; ;Value: s2
+;; 
+;; 1 ]=> (define s3 (adjoin-set (make-code-tree (car s2) (cadr s2)) (cddr s2)))
+;; 
+;; ;Value: s3
+;; 
+;; 1 ]=> (define s4 (adjoin-set (make-code-tree (car s3) (cadr s3)) (cddr s3)))
+;; 
+;; ;Value: s4
+;; 
+;; 1 ]=> (define s5 (adjoin-set (make-code-tree (car s4) (cadr s4)) (cddr s4)))
+;; 
+;; ;Value: s5
+;; 
+;; 1 ]=> (define s6 (adjoin-set (make-code-tree (car s5) (cadr s5)) (cddr s5)))
+;; 
+;; ;Value: s6
+;; 
+;; 1 ]=> (define s7 (adjoin-set (make-code-tree (car s6) (cadr s6)) (cddr s6)))
+;; 
+;; ;Value: s7
+;; 
+;; 1 ]=> (define s8 (adjoin-set (make-code-tree (car s7) (cadr s7)) (cddr s7)))
+;; 
+;; ;Value: s8
+;; 
+;; 1 ]=> (define result (car s8))
+;; 
+;; ;Value: result
+;; 
+;; 1 ]=> (equal? (generate-huffman-tree symbol-frequency) result)
+;; 
+;; ;Value: #t
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; 1 ]=> (define song '(get a job sha na na na na na na na na get a job sha na na na na na na na na wah yip yip yip yip yip yip yip yip yip sha boom))
+;; 
+;; ;Value: song
+;; 
+;; 1 ]=> (define tree (generate-huffman-tree symbol-frequency))
 ;; 
 ;; ;Value: tree
 ;; 
-;; 1 ]=> (decode '(0 1 1 0 0 1 0 1 0  1 1 1 0) tree)
+;; 1 ]=> (encode song tree)
 ;; 
-;; ;Value 12: (a d a b b c a)
+;; ;Value 12: (1 1 1 1 1 1 1 0 0 1 1 1 1 0 1 1 1 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 0 0 1 1 1 1 0 1 1 1 0 0 0 0 0 0 0 0 0 1 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 1 1 0 1 1 0 1 1)
+;; ;
+;; 1 ]=> (length (encode song tree))
 ;; 
-;; 1 ]=> (encode (decode '(0 1 1 0 0 1 0 1 0  1 1 1 0) tree) tree)
-;; 
-;; ;Value 13: (0 1 1 0 0 1 0 1 0 1 1 1 0)
+;; ;Value: 84
