@@ -10,6 +10,6 @@
   (= (remainder n divisor) 0))
 
 (define (prime? n)
-  (if (= n 1)
+  (if (<=  n 1)
     false
     (= (smallest-divisor n) n)))
