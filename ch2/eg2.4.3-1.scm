@@ -11,12 +11,6 @@
     (cdr datum)
     (error "Bad tagged datum -- CONTENTS" datum)))
 
-(define (rectangular? z)
-  (eq? (type-tag z) 'rectangular))
-
-(define (polar? z)
-  (eq? (type-tag z) 'polar))
-
 
 (define (add-complex z1 z2)
   (make-from-real-imag (+ (real-part z1) (real-part z2))
