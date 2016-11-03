@@ -199,11 +199,11 @@
 
 (define (angle z) (apply-generic 'angle z))
 
-(define (make-from-real-imag x y)
-  ((get 'make-from-real-imag 'rectangular) x y))
-
-(define (make-from-mag-ang r a)
-  ((get 'make-from-mag-ang 'polar) r a))
+;; (define (make-from-real-imag x y)
+;;   ((get 'make-from-real-imag 'rectangular) x y))
+;; 
+;; (define (make-from-mag-ang r a)
+;;   ((get 'make-from-mag-ang 'polar) r a))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; COMPLEX ARITHMETIC PACKAGE ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
