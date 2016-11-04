@@ -436,4 +436,10 @@
 ;; m = x^2 + 2x + 5
 (define m (make-polynomial 'x '((2 1) (1 2) (0 5))))
 
-(add n m)
+;; 1 ]=> (add n m)
+;; 
+;; ;Value 14: (polynomial x (3 1) (2 3) (1 6) (0 6))
+;; 
+;; 1 ]=> (mul n m)
+;; 
+;; ;Value 13: (polynomial x (5 1) (4 4) (3 13) (2 19) (1 22) (0 5))
