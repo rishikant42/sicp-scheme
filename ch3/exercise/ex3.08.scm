@@ -1,4 +1,4 @@
-(define (fn)
+(define f
   (let ((first #t))
     (lambda (x)
       (if (and first (= x 1))
@@ -6,8 +6,6 @@
                1)
         (begin (set! first #f)
                0)))))
-
-(define f (fn))
 
 ;; 1 ]=> (load "ex3.08.scm")
 ;; 
