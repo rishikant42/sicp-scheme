@@ -9,5 +9,5 @@
 
 (define z (make-cycle (list 'a 'b 'c)))
 
-;; => z
+;; => (last-pair z)
 ;; It will produce infinite recursion
