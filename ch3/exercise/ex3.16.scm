@@ -13,14 +13,26 @@
 ;; 
 ;; ;Value: 3
 ;; 
-;; 1 ]=> (define l2 (cons l1 '()))
-;; 
-;; ;Value: l2
-;; 
-;; 1 ]=> (count-pairs l2)
-;; 
+;; 1 ]=> (define second (cons 'a 'b)) 
+
+;; ;Value: second
+
+;; 1 ]=> (define third (cons 'a 'b)) 
+;;
+;; ;Value: third
+;;
+;; 1 ]=>  (define first (cons second third)) 
+;;
+;; ;Value: first
+;;
+;; 1 ]=>  (set-car! third second) 
+;;
+;; ;Unspecified return value
+;;
+;; 1 ]=> (count-pairs first)
+;;
 ;; ;Value: 4
-;; 
+
 ;; 1 ]=> (define (make-cycle x)
 ;;         (set-cdr! (last-pair x) x) x)
 ;; 
