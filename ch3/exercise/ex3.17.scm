@@ -1,0 +1,17 @@
+(define (count-pairs x)
+  (let ((visited '()))
+    (define (count y)
+      (cond ((not (pair? y)) 0)
+            ((memq y visited) 0)
+            (else (set! visited (cons y visited))
+                  (+ (count (car y))
+                     (count (cdr y))
+                     1))))
+    (count x)))
+
+(define second (cons 'a 'b)) 
+(define third (cons 'a 'b)) 
+(define first (cons second third)) 
+(set-car! third second) 
+(count-pairs first)
+;; 3
