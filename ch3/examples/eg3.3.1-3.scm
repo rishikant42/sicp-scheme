@@ -44,6 +44,17 @@
 ;; 
 ;; ;Value: #f
 
+
+
+;; MORE INTRESTING
+
+;; 1 ]=> (eq? (list 'a 'b) (list  'a 'b))
+;; 
+;; ;Value: #f
+
+;; Reason: Bcoz list use cons operation , And cons always formed new pair. so both pairs have different pointers
+;; eq? test pointer equality
+
 (define (set-to-wow! x)
   (set-car! (car x) 'wow)
   x)
