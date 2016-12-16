@@ -31,3 +31,41 @@
     (error "DELETE! called with an empty queue" queue)
     (begin (set-front-ptr! queue (cdr (front-ptr queue)))
            queue)))
+
+;; TEST
+;; 
+;; 1 ]=> (define q (make-queue))
+;; 
+;; ;Value: q
+;; 
+;; 1 ]=> (insert-queue! q 'a)
+;; 
+;; ;Value 11: ((a) a)
+;; 
+;; 1 ]=> (insert-queue! q 'b)
+;; 
+;; ;Value 11: ((a b) b)
+;; 
+;; 1 ]=> (insert-queue! q 'c)
+;; 
+;; ;Value 11: ((a b c) c)
+;; 
+;; 1 ]=> (front-queue q)
+;; 
+;; ;Value: a
+;; 
+;; 1 ]=> (delete-queue! q )
+;; 
+;; ;Value 11: ((b c) c)
+;; 
+;; 1 ]=> (delete-queue! q)
+;; 
+;; ;Value 11: ((c) c)
+;; 
+;; 1 ]=> (delete-queue! q)
+;; 
+;; ;Value 11: (() c)
+;; 
+;; 1 ]=> (insert-queue! q 'a)
+;; 
+;; ;Value 11: ((a) a)
