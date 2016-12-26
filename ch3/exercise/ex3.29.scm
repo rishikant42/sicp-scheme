@@ -1,0 +1,10 @@
+;; A or B  ==  (not  ( (not A) and (not B) ) )
+
+(define (or-gate a1 a2 output)
+  (let ((p (make-wire))
+        (q (make-wire))
+        (r (make-wire)))
+    (inverter a1 p)
+    (inverter a2 q)
+    (and-gate p q r)
+    (logic-not r output)))
