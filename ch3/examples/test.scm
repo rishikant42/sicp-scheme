@@ -81,6 +81,7 @@
   (cond ((null? records) #f)
         ((equal? key (caar records)) (car records))
         (else (assoc key (cdr records)))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; 1 ]=> (define r (list (cons 'a 1) (cons 'b 2) (cons 'c 3)))
 ;; 
