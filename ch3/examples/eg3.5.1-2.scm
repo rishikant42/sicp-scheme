@@ -32,3 +32,40 @@
 (define (stream-car s) (car s))
 
 (define (stream-cdr s) (force (cdr s)))
+
+
+;; TEST
+
+;; 1 ]=> (define s (cons-stream 1 (cons-stream 2 (cons-stream 3 the-empty-stream))))
+;; 
+;; Value: s
+;; 
+;; 1 ]=> s
+;; 
+;; ;Value 11: (1 . #[promise 12])
+;; 
+;; 1 ]=> (display-stream s)
+;; 
+;; 1
+;; 2
+;; 3
+;; ;Value: done
+;; 
+;; 1 ]=> (stream-car s)
+;; 
+;; ;Value: 1
+;; 
+;; 1 ]=> (stream-cdr s)
+;; 
+;; ;Value 13: (2 . #[promise 14])
+;; 
+;; 1 ]=> (define s2 (stream-map square s))
+;; 
+;; ;Value: s2
+;; 
+;; 1 ]=> (display-stream s2)
+;; 
+;; 1
+;; 4
+;; 9
+;; ;Value: done
