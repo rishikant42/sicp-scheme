@@ -38,6 +38,15 @@
                                                  (stream-filter pred (stream-cdr stream))))
         (else (stream-filter pred (stream-cdr stream)))))
 
+(define (stream-list . args)
+  (define (helper items)
+    (if (null? items)
+      the-empty-stream
+      (cons-stream (car items)
+                   (helper (cdr items)))))
+  (helper args))
+
+
 (define (cons-stream a b)
   (cons a (delay b)))
 
