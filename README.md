@@ -22,4 +22,10 @@ This repo contains examples and excercise soloutions of *SICP*.
 - https://www.quora.com/Is-Structure-and-Interpretation-of-Computer-Programs-SICP-worth-reading-Is-it-outdated-nowadays
 ---
 
+### ToDO:
+
+- Exercise solutions & examples of chapter 4 & 5 are left. Will be added soon.
+- Need to work on open issues.
+
+---
 All PR, issues, comments and suggestions are most welcome.
