@@ -14,12 +14,12 @@ This repo contains examples and excercise soloutions of *SICP*.
 
 ---
 
----
-
 ### Why SICP?
 
 - http://people.eecs.berkeley.edu/~bh/sicp.html
-- https://www.quora.com/Is-Structure-and-Interpretation-of-Computer-Programs-SICP-worth-reading-Is-it-outdated-nowadays
 - https://www.reddit.com/r/compsci/comments/3ao6vp/sicp_worth_it/
 - https://news.ycombinator.com/item?id=5631441
+- https://www.quora.com/Is-Structure-and-Interpretation-of-Computer-Programs-SICP-worth-reading-Is-it-outdated-nowadays
 ---
+
+All PR, issues, comments and suggestions are most welcome.
