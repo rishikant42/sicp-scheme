@@ -20,6 +20,7 @@ This repo contains examples and excercise soloutions of *SICP*.
 - https://www.reddit.com/r/compsci/comments/3ao6vp/sicp_worth_it/
 - https://news.ycombinator.com/item?id=5631441
 - https://www.quora.com/Is-Structure-and-Interpretation-of-Computer-Programs-SICP-worth-reading-Is-it-outdated-nowadays
+- https://www.amazon.com/review/R403HR4VL71K8/ref=cm_cr_dp_title?ie=UTF8&ASIN=0262510871&channel=detail-glance&nodeID=283155&store=books
 ---
 
 ### ToDO:
