@@ -12,8 +12,6 @@
 
 ### How interpreter evaluate the expressions?
 
----
-
 Usually interpreter follow these steps to evaluate the expressions:
 
 - Evaluate the subexpressions of the combination.
@@ -24,7 +22,6 @@ Usually interpreter follow these steps to evaluate the expressions:
 
 ### Example:
 
----
 Take an example to explain the different method of evaluation. Lets define a compound proceduce as given below
 
 ```
@@ -42,8 +39,6 @@ Take an example to explain the different method of evaluation. Lets define a com
 
 
 ### Applicative order evaluation:
-
----
 
 - As described above, evaluates the operator and operands and then applies the resulting procedure to the resulting arguments.
 
@@ -70,8 +65,6 @@ Take an example to explain the different method of evaluation. Lets define a com
 ---
 
 ### Normal order evaluation
-
----
 
 - An alternative evaluation model would not evaluate the operands until their values were needed. Instead it would first substitute operand expressions for parameters until it obtained an expression involving only primitive operators, and would then perform the evaluation.
 
@@ -100,7 +93,6 @@ NOTE: Lisp uses applicative-order evaluation, partly because of the additional e
 
 ### Miscellaneous Example:
 
----
 - Take an example where above methods will produce different results for the same procedure.
 
 ```
@@ -136,7 +128,6 @@ NOTE: Lisp uses applicative-order evaluation, partly because of the additional e
 ---
 
 ### Some application of normal order evaluation.
----
 
 - Concept of stream/delayed list
 
