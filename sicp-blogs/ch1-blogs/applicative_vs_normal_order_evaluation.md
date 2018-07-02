@@ -131,8 +131,10 @@ NOTE: Lisp uses applicative-order evaluation, partly because of the additional e
 
 - Concept of stream/delayed list
 
-- Concept of generator in Python
+- Concept of generator in Python(Not sure)
 
 - Infinite list
+
+- Lazy evaluation
 
 ---
