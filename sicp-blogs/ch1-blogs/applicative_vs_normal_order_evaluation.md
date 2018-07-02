@@ -17,6 +17,7 @@
 Usually interpreter follow these steps to evaluate the expressions:
 
 - Evaluate the subexpressions of the combination.
+
 - Apply the procedure that is the value of the leftmost subexpression (the operator) to the arguments that are the values of the other subexpressions (the operands).
 
 ---
@@ -95,4 +96,52 @@ Take an example to explain the different method of evaluation. Lets define a com
 - This gives the same answer as our previous evaluation model, but the process is different. In particular, the evaluations of (+ 5 1) and (\* 5 2) are each performed twice here, corresponding to the reduction of the expression (\* x x) with x replaced respectively by (+ 5 1) and (\* 5 2).
 ---
 
-### NOTE: Lisp uses applicative-order evaluation, partly because of the additional efficiency obtained from avoiding multiple evaluations of same expressions.
+NOTE: Lisp uses applicative-order evaluation, partly because of the additional efficiency obtained from avoiding multiple evaluations of same expressions.
+
+### Miscellaneous Example:
+
+---
+- Take an example where above methods will produce different results for the same procedure.
+
+```
+(define (p) (p))
+
+(define (test x y)
+  (if (= x 0)
+      0
+      y))
+
+```
+
+- Using applicative-order evaluation, the evaluation of (test 0 (p)) never terminates, because (p) is infinitely expanded to itself.
+```
+(test 0 (p))
+
+(test 0 (p))
+
+(test 0 (p)) .......
+
+```
+
+- Using normal-order evaluation, the expression evaluates, step by step, to 0.
+```
+(test 0 (p))
+
+(if (= 0 0) 0 (p))
+
+(if #t 0 (p))
+
+0
+```
+---
+
+### Some application of normal order evaluation.
+---
+
+- Concept of stream/delayed list
+
+- Concept of generator in Python
+
+- Infinite list
+
+---
