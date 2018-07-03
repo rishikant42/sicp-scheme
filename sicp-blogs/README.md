@@ -1,5 +1,7 @@
 # sicp-blogs
 
-This repo contains the list of blogs over  *SICP*.
+This repo contains the list of blogs on  *SICP*.
 
-[Applicative vs normal order evaluation.](./ch1-blogs/applicative_vs_normal_order_evaluation.md)
+1 [Applicative vs normal order evaluation.](./ch1-blogs/applicative_vs_normal_order_evaluation.md)
+
+2 [Square root approximation.](./ch1-blogs/square_root_approximation.md)
