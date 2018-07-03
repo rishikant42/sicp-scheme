@@ -1,140 +1,78 @@
 # Square roots by Newton's method
 
-### Prerequisite
+### Defination
 
----
-- *Primitive expressions*: Inbuilt data/procedure in any programming language. Their defination is predifened. The values of built-in operators are the machine instruction sequences that carry out the corresponding operations.  Eg: \*, +, 10
+Square-root of x can be defined as
 
-- *Compound expressions*: These are build by combining primitive expressions.
+`x^1/2 = y such that y >= 0 and y^2 = x`
 
-- *Abstraction*: A mean by which compound elements can be named and manipulated as units. Eg: `define` keyword
----
-
-### How interpreter evaluate the expressions?
-
-Usually interpreter follow these steps to evaluate the expressions:
-
-- Evaluate the subexpressions of the combination.
-
-- Apply the procedure that is the value of the leftmost subexpression (the operator) to the arguments that are the values of the other subexpressions (the operands).
+This describes a mathematical function. We could use it to recognize whether one number is the square root of another but it didn't tells us anything about how to actually find the square root of a given number.
 
 ---
 
-### Example:
+### How to find the square roots?
 
-Take an example to explain the different method of evaluation. Lets define a compound proceduce as given below
+The most common way is to use **Newton’s method of successive approximations**, which says that whenever we have a guess `y` for the value of the square root of a number `x`, we can perform a simple manipulation to get a better guess (one closer to the actual square root) by averaging `y` with `x/y`.
 
-```
-(define (square x)
-  (* x x))
+Lets try to calculate the square roots of 2. Assume that the start guess value is 1
 
-(define (sum-of-squares x y)
-  (+ (square x) (square y)))
-
-(define (f a)
-  (sum-of-squares (+ a 1) (* a 2))
-
-```
----
-
-
-### Applicative order evaluation:
-
-- As described above, evaluates the operator and operands and then applies the resulting procedure to the resulting arguments.
-
-- In short, evaluate the arguments and then apply.
-
-```
-
-(f 5)
-
-(sum-of-squares (+ 5 1) (* 5 2))
-
-(sum-of-squares 6 10)
-
-(+ (square 6) (square 10))
-
-(+ (* 6 6) (* 10 10))
-
-(+ 36 100)
-
-136
-
-```
+| Guess            | Quotient           | Average                      |
+| -----------------|:------------------:| ---------------------------: |
+| 1                | (2/1)              | ((2 + 1)/2) = 1.5            |
+| 1.5              | (2/1.5) = 1.3333   | ((1.3333 + 1.5)/2) = 1.4167  |
+| 1.4167           |(2/1.4167) = 1.4118 |((1.4167 + 1.4118)/2) = 1.4142|
+|1.4142            | .......            | ....                         |
 
 ---
 
-### Normal order evaluation
+### Scheme's procedure
 
-- An alternative evaluation model would not evaluate the operands until their values were needed. Instead it would first substitute operand expressions for parameters until it obtained an expression involving only primitive operators, and would then perform the evaluation.
-
-- In short, fully expand and then reduce.
+1 Convert Above square root defination in procedure
 
 ```
-(f 5)
-
-(sum-of-squares (+ 5 1) (* 5 2))
-
-(+ (square (+ 5 1)) (square (* 5 2)))
-
-(+ (* (+ 5 1) (+ 5 1)) (* (* 5 2) (* 5 2)))         ;; only primitives
-
-(+ (* 6 6) (* 10 10))
-
-(+ 36 100)
-
-136
-
-```
-- This gives the same answer as our previous evaluation model, but the process is different. In particular, the evaluations of (+ 5 1) and (\* 5 2) are each performed twice here, corresponding to the reduction of the expression (\* x x) with x replaced respectively by (+ 5 1) and (\* 5 2).
----
-
-NOTE: Lisp uses applicative-order evaluation, partly because of the additional efficiency obtained from avoiding multiple evaluations of same expressions.
-
-### Miscellaneous Example:
-
-- Take an example where above methods will produce different results for the same procedure.
-
-```
-(define (p) (p))
-
-(define (test x y)
-  (if (= x 0)
-      0
-      y))
-
+(define (sqrt-iter guess x)
+  (if (good-enough? guess x)
+    guess
+    (sqrt-iter (improve guess x)
+               x)))
 ```
 
-- Using applicative-order evaluation, the evaluation of (test 0 (p)) never terminates, because (p) is infinitely expanded to itself.
-```
-(test 0 (p))
-
-(test 0 (p))
-
-(test 0 (p)) .......
+2 Define `good-enough` and `imporve` procedures. We call guess is good-enough if the absolute difference in square-of-guess and actual number is less than 0.001.
 
 ```
-
-- Using normal-order evaluation, the expression evaluates, step by step, to 0.
+(define (good-enough? guess x)
+  (< (abs (- (square guess) x)) 0.001))
+  
+(define (improve guess x)
+  (average guess (/ x guess)))
 ```
-(test 0 (p))
 
-(if (= 0 0) 0 (p))
+3 Define `square` and `average` procedure.
 
-(if #t 0 (p))
-
-0
 ```
----
+(define (square x) (* x x))
 
-### Some application of normal order evaluation.
+(define (average x y) (/ (+ x y) 2))
+```
 
-- Concept of stream/delayed list
+3 Start the approximation by assuming initial guess value is 1
 
-- Concept of generator in Python(Not sure)
+```
+(define (sqrt x)
+  (sqrt-iter 1.0 x))
+```
 
-- Infinite list
+### Test
+```
+1 ]=> (sqrt 2)
 
-- Lazy evaluation
+;Value: 1.4142156862745097
 
----
+1 ]=> (sqrt 9)
+
+;Value: 3.00009155413138
+
+1 ]=> (sqrt 0.5)
+
+;Value: .7071078431372548
+```
