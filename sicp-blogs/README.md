@@ -6,4 +6,4 @@ This repo contains the list of blogs on  *SICP*.
 
 2 [Square root approximation.](./ch1-blogs/square_root_approximation.md)
 
-2 [Recurice procedures: Recursive & Iterative process](./ch1-blogs/recursive_iterative_process.md)
+3 [Recurice procedures: Recursive & Iterative process](./ch1-blogs/recursive_iterative_process.md)
