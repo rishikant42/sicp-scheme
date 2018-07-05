@@ -1,4 +1,4 @@
-# Procedures and the processes they Generate
+# Procedures and the processes they generate
 
 **Recursive procedures**: Procedures that are defined in terms of itself.
 
@@ -55,7 +55,44 @@ Let's try to see how interpreter evaluate the computation by this method.
 
 We can describe a rule for computing n! by specifying that we first multiply 1 by 2, then multiply the result by 3, then by 4, and so on until we reach n. 
 
-product <--- counter * product
+product <--- counter \* product \
 counter <--- counter + 1
 
-More formally, we maintain a running product, together with a counter that counts from 1 up to n. We can describe the computation by saying that the counter and the product simultaneously change from one step to the next according to the above rules. And we return value of the product when the counter exceeds n.
+We maintain a running product, together with a counter that counts from *1* up to *n*. We can describe the computation by saying that the counter and the product simultaneously change from one step to the next according to the above rules. And we return value of the product when the counter exceeds *n*.
+
+**Scheme code**
+```
+(define (fact-iter product counter max-count)
+  (if (> counter max-count)
+    product
+    (fact-iter (* product counter)
+               (+ counter 1)
+               max-count)))
+
+(define (factorial n)
+  (fact-iter 1 1 n))
+```
+
+Let’s try to see how interpreter evaluate the computation by this method.
+
+```
+;; A linear iterative process for computing 6!.
+
+(factorial 6)
+
+(fact-iter 1 1 6)
+
+(fact-iter 1 2 6)
+
+(fact-iter 2 3 6)
+
+(fact-iter 6 4 6)
+
+(fact-iter 24 5 6)
+
+(fact-iter 120 6 6)
+
+(fact-iter 720 7 6)
+
+720
+```
