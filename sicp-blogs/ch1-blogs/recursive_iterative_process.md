@@ -97,7 +97,7 @@ Let’s try to see how interpreter evaluate the computation by this method.
 720
 ```
 
-**Observations:**
+**Note:**
 
 Compare above two processes. From one point of view, they seem hardly different at all. Both compute the same mathematical function on the same domain, and each requires a number of steps proportional to *n* to compute *n!*. Both processes even carry out the same sequence of multiplications, obtaining the same sequence of partial products. On the other hand, when we consider the `shapes` of the two processes, we find that they evolve quite differently.
 
@@ -112,10 +112,10 @@ Consider the shape of first process, It's shape first grow then shrink. The expa
 (define (<fn-name> <params>)
   (if (<some-condition>)
     <return-value>
-    (<deferred operator> (<fn-name> <updated-params>))))            ;; this line syntax make process recursive
+    (<deferred operator> (<fn-name> <updated-params>))))      ;; this line syntax make process recursive
 ```
 
-**Note:** Carrying out recursive process requires that the interpreter keep track of the operations to be performed later on. In the computation of n!, the length of the chain of deferred multiplications, and hence the amount of information needed to keep track of it, grows linearly with n (is proportional to n), just like the number of steps. Such a process is called a *linear recursive process*.
+**NOTE:** Carrying out recursive process requires that the interpreter keep track of the operations to be performed later on. In the computation of n!, the length of the chain of deferred multiplications, and hence the amount of information needed to keep track of it, grows linearly with n (is proportional to n), just like the number of steps. Such a process is called a *linear recursive process*.
 
 ### Iterative process:
 
