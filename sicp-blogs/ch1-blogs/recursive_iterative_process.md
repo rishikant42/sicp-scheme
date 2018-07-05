@@ -101,6 +101,8 @@ Let’s try to see how interpreter evaluate the computation by this method.
 
 Compare above two processes. From one point of view, they seem hardly different at all. Both compute the same mathematical function on the same domain, and each requires a number of steps proportional to *n* to compute *n!*. Both processes even carry out the same sequence of multiplications, obtaining the same sequence of partial products. On the other hand, when we consider the `shapes` of the two processes, we find that they evolve quite differently.
 
+---
+
 ### Recursive process:
 
 Consider the shape of first process, It's shape first grow then shrink. The expansion occurs as the process builds up a chain of *deferred operations* and the contraction occurs as the operations are actually performed. This type of process, characterized by a chain of *deferred operations*, is called a recursive process.
@@ -130,6 +132,8 @@ Consider the shapee of second process. It doesn't grow and srink. At each step, 
 ```
 
 **NOTE:**  In general, an iterative process is one whose state can be summarized by a fixed number of state variables, together with a fixed rule that describes how the state variables should be updated as the process moves from state to state and an (optional) end test that specifies conditions under which the process should terminate. In computing n!, the number of steps required grows linearly with n. Such a process is called a linear iterative process.
+
+---
 
 ### Observations:
 - *Recursive procedures* can be defined as *recursive process* and *iterative process*.
