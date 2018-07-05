@@ -136,7 +136,7 @@ Consider the shapee of second process. It doesn't grow and srink. At each step, 
 
 - When we describe a procedure as recursive, we are referring to the syntactic fact that the procedure definition refers (either directly or indirectly) to the procedure itself. But when we describe a process as following a pattern that is, say, linearly recursive, we are speaking about how the process evolves, not about the syntax of how a procedure is written.
 
-- In case of iterative process,  An interpreter need to keep track of only fixed variables in order to execute the process. In *fact-iter* process, these variables are *product, counter and max-count**.
+- In case of iterative process,  An interpreter need to keep track of only fixed variables in order to execute the process. In *fact-iter* process, these variables are *product, counter and max-count*.
 
 - In case of recursive process, some additional hidden information maintained by the interpreter that allow to perform actual computation later(At time of srink). This process required auxiliary memory (usually stack). Process grow and srink over stack.
 
