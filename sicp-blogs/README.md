@@ -8,4 +8,6 @@ This repo contains the list of blogs on  *SICP*.
 
 3 [Recurice procedures: Recursive & Iterative process](./ch1-blogs/recursive_iterative_process.md)
 
-3 [Case study: Time & space complexity optimization](./ch1-blogs/case_study_complexity_optimization.md)
+4 [Case study: Time & space complexity optimization](./ch1-blogs/case_study_complexity_optimization.md)
+
+5 [Probabilistic algorithms: Fermat test](./ch1-blogs/fermat_test.md)
