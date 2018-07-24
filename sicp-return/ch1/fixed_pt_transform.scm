@@ -56,7 +56,3 @@
                             newton-transform
                             1.0))
 
-(define (nth-root2 x n)
-  (fixed-point-of-transform (lambda (guess) (/ x (expt guess (- n 1))))
-                            average-damp
-                            1.0))
